@@ -1,7 +1,7 @@
 {
   "recommendations": [
       "esbenp.prettier-vscode",
-      "justjavac.vscode-deno",
+      "denoland.vscode-deno",
       "ckolkman.vscode-postgres"
   ]
 }
