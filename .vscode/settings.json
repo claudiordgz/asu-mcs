@@ -18,5 +18,8 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "files.associations": {
+        "*.sql": "postgres"
+    },
     "deno.enable": true
 }
