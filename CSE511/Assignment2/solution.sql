@@ -118,9 +118,9 @@ CREATE TABLE similarities AS
 CREATE TABLE recommendation AS
   SELECT m.title as title
   FROM (
-    SELECT movieid, (SUM(similarity) / SUM(dividend)) as probability
+    SELECT movieid, (SUM(similarity * rating) / SUM(similarity)) as probability
     FROM (
-      SELECT sim.movieid1 as movieid, sim.sim as similarity, sim.sim * r.rating as dividend
+      SELECT sim.movieid1 as movieid, sim.sim as similarity, r.rating as rating
       FROM similarities sim, ratings r
       WHERE r.userid = :v1 AND sim.movieid2 = r.movieid
       GROUP BY sim.movieid1, sim.sim, r.rating
@@ -128,4 +128,4 @@ CREATE TABLE recommendation AS
     ) AS recommendations_base
     GROUP BY movieid
   ) AS recommendations_movies, movies m
-  WHERE probability > 0.3 and recommendations_movies.movieid = m.movieid;
+  WHERE recommendations_movies.movieid = m.movieid and probability > 3.9;
