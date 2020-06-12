@@ -21,5 +21,6 @@
     "files.associations": {
         "*.sql": "postgres"
     },
-    "deno.enable": true
+    "deno.enable": true,
+    "python.pythonPath": "C:\\Users\\clrodri\\AppData\\Local\\conda\\conda\\envs\\py2\\python.exe"
 }

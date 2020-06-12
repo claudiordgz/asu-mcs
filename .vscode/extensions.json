@@ -2,6 +2,7 @@
   "recommendations": [
       "esbenp.prettier-vscode",
       "denoland.vscode-deno",
-      "ckolkman.vscode-postgres"
+      "ckolkman.vscode-postgres",
+      "ms-python.python"
   ]
 }
