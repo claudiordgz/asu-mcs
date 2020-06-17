@@ -95,8 +95,8 @@ if __name__ == '__main__':
         # Calling ParallelSort
         print "Performing Parallel Sort"
         Assignment3.ParallelSort('ratings', 'Rating', 'parallelSortOutputTable', con);
-        a = raw_input("Check in database and once you are done, press enter to delete all tables: ");
-        deleteTables('ALL', con);
+        #a = raw_input("Check in database and once you are done, press enter to delete all tables: ");
+        #deleteTables('ALL', con);
 
         #Loading two tables ratings and movies
         Assignment1.loadRatings('ratings', 'ratings.txt', con);
@@ -104,8 +104,8 @@ if __name__ == '__main__':
         # Calling ParallelJoin
         print "Performing Parallel Join"
         Assignment3.ParallelJoin('ratings', 'movies', 'MovieId', 'MovieId1', 'parallelJoinOutputTable', con);
-        a = raw_input("Check corresponding table content in database and once you are done, press enter to delete all tables: ");
-        deleteTables('ALL', con);
+        #a = raw_input("Check corresponding table content in database and once you are done, press enter to delete all tables: ");
+        #deleteTables('ALL', con);
 
         if con:
             con.close()
