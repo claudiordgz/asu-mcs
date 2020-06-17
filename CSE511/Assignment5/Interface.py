@@ -9,13 +9,36 @@ import sys
 
 # Donot close the connection inside this file i.e. do not perform openconnection.close()
 def ParallelSort (InputTable, SortingColumnName, OutputTable, openconnection):
-    #Implement ParallelSort Here.
-    pass #Remove this once you are done with implementation
+    cursor = openconnection.cursor()
+    cursor.execute("""
+        DROP TABLE IF EXISTS {output_table};
+        CREATE TABLE {output_table} AS
+        SELECT *
+        FROM {table_name}
+        ORDER BY {sorting_column};
+    """.format(
+        table_name=InputTable,
+        sorting_column=SortingColumnName,
+        output_table=OutputTable
+    )) 
 
 def ParallelJoin (InputTable1, InputTable2, Table1JoinColumn, Table2JoinColumn, OutputTable, openconnection):
-    #Implement ParallelJoin Here.
-    pass # Remove this once you are done with implementation
-
+    cursor = openconnection.cursor()
+    parallel_join_query = """
+        DROP TABLE IF EXISTS {output_table};
+        CREATE TABLE {output_table} AS
+        SELECT *
+        FROM {table1}
+        JOIN {table2}
+        ON {table1}.{key1} = {table2}.{key2};
+    """.format(
+        table1=InputTable1,
+        table2=InputTable2,
+        key1=Table1JoinColumn,
+        key2=Table2JoinColumn,
+        output_table=OutputTable
+    )
+    cursor.execute(parallel_join_query)
 
 ################### DO NOT CHANGE ANYTHING BELOW THIS #############################
 
