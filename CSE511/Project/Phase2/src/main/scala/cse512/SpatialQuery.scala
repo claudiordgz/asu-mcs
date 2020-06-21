@@ -9,7 +9,6 @@ object SpatialQuery extends App{
   }
 
   def _stContains(queryRectangle:String, pointString:String): Boolean  = {
-    println()
     val queryRectangleArray = parseStringOfDoubles(queryRectangle)
     val xMin = queryRectangleArray(0)
     val yMin = queryRectangleArray(1)
