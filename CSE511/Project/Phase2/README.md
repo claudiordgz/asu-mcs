@@ -111,19 +111,31 @@ spark-submit ./target/scala-2.11/CSE512-Project-Phase2-Template-assembly-0.1.0.j
 	distancejoinquery ./src/resources/arealm10000.csv ./src/resources/arealm10000.csv 0.1
 ```
 
+```
 spark-submit target/scala-2.11/CSE512-Project-Phase2-Template-assembly-0.1.0.jar result/output rangequery src/resources/arealm10000.csv -93.63173,33.0183,-93.359203,33.219456
+```
+```
 spark-submit target/scala-2.11/CSE512-Project-Phase2-Template-assembly-0.1.0.jar result/output rangejoinquery src/resources/arealm10000.csv src/resources/zcta10000.csv
+```
+```
 spark-submit target/scala-2.11/CSE512-Project-Phase2-Template-assembly-0.1.0.jar result/output distancequery src/resources/arealm10000.csv -88.331492,32.324142 1
+```
+```
 spark-submit target/scala-2.11/CSE512-Project-Phase2-Template-assembly-0.1.0.jar result/output distancejoinquery src/resources/arealm10000.csv src/resources/arealm10000.csv 0.1
+```
 
+```
 example for stContains
 "-93.63173,33.0183,-93.359203,33.219456" rectangle
- point
+"-88.331492,32.324142" point
+```
 
+```
 example for stWithin
 "-88.388954,32.357073" point1
 "-88.331492,32.324142" point2 
 1 distance
+```
 
 ### 5. Vocareum (submission site)
 
