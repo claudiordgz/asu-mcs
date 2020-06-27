@@ -5,6 +5,7 @@
       "ckolkman.vscode-postgres",
       "ms-python.python",
       "scala-lang.scala",
-      "lightbend.vscode-sbt-scala"
+      "lightbend.vscode-sbt-scala",
+      "scalameta.metals"
   ]
 }
