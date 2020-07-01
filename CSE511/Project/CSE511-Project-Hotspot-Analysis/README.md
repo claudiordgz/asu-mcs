@@ -1,13 +1,12 @@
-# CSE512-Project-Hotspot-Analysis-Template
-#### Version history
-v1.1, Nov 16, Fix a bug in "Entrace.scala"
-v1.0, Nov 13, Initial version
+# CSE511-Project-Hotspot-Analysis-Template
 
+## Few Notes for future SELF
 
+ - `testcases` directory is stale and invalid, there is no real expected results data available in the local directory
+ 
 ## Requirement
 
 In this phase, you are required to do spatial hot spot analysis. In particular, you need to complete two different hot spot analysis tasks 
-
 
 ### Hot zone analysis
 This task will needs to perform a range join operation on a rectangle datasets and a point dataset. For each rectangle, the number of points located within the rectangle will be obtained. The hotter rectangle means that it include more points. So this task is to calculate the hotness of all the rectangles. 
