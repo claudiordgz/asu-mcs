@@ -54,7 +54,7 @@ object HotcellAnalysis {
     // Define the min and max of x, y, z
     val results = HotcellUtils.hotcellAnalysis(spark, pickupInfo)
 
-    return results // YOU NEED TO CHANGE THIS PART
+    return results
   }
 }
  

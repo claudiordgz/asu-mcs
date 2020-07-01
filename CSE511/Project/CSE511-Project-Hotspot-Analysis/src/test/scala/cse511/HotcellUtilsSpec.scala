@@ -1,4 +1,6 @@
 import org.specs2.mutable.Specification
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.SaveMode
 
 object HotcellUtilsSpec extends Specification {
   val minX = -74.50/cse511.HotcellUtils.coordinateStep
@@ -10,29 +12,37 @@ object HotcellUtilsSpec extends Specification {
 
   "stWithin" should {
     "check that it falls inside points" in {
-      val x = -7399
-      val y = 4075
-      val z = 25
-      val distance = 1
-      val result = cse511.HotcellUtils.stWithin(
+      var x = -7399
+      var y = 4075
+      var z = 25
+      var distance = 1
+      var result = cse511.HotcellUtils.stWithin(
+        minX.toLong, maxX.toLong,
+        minY.toLong, maxY.toLong,
+        minZ.toLong, maxZ.toLong,
+        x, y, z)
+      result mustEqual true
+
+      x = -7406
+      y = 4076
+      z = 13
+      distance = 1
+      result = cse511.HotcellUtils.stWithin(
         minX.toLong, maxX.toLong,
         minY.toLong, maxY.toLong,
         minZ.toLong, maxZ.toLong,
         x, y, z)
       result mustEqual true
     }
-    "check that it falls inside points" in {
-      val x = -7406
-      val y = 4076
-      val z = 13
+  }
 
-      val distance = 1
-       val result = cse511.HotcellUtils.stWithin(
-        minX.toLong, maxX.toLong,
-        minY.toLong, maxY.toLong,
-        minZ.toLong, maxZ.toLong,
-        x, y, z)
-      result mustEqual true
+  "hotcellAnalysis" should {
+    "match the answers in provided csv" in {
+      val spark = SparkSession.builder().master("local").appName("testHotcell").getOrCreate()
+      val df = cse511.HotcellAnalysis.loadDataSilently(spark, "src/resources/yellow_trip_sample_100000.csv")
+      val results = cse511.HotcellUtils.hotcellAnalysis(spark, df, true)
+      results.limit(50).show()
+      true mustEqual true
     }
   }
 }

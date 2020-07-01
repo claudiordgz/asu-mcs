@@ -101,7 +101,7 @@ object HotcellUtils {
     return (isAdjacent(xi, xj) && isAdjacent(yi, yj) && isAdjacent(zi, zj))
   }
 
-  def hotcellAnalysis(spark: SparkSession, pickupInfo: DataFrame): DataFrame = {
+  def hotcellAnalysis(spark: SparkSession, pickupInfo: DataFrame, withZscores: Boolean = false): DataFrame = {
     import spark.implicits._
 
     val minX = -74.50/HotcellUtils.coordinateStep
@@ -159,7 +159,12 @@ object HotcellUtils {
       })
       .toDF("x","y","z","zscore")
     results.createOrReplaceTempView("zscore")
-    val resultsDf = spark.sql("SELECT x,y,z FROM zscore ORDER BY zscore DESC, x DESC, y ASC, z DESC")
+    val withZscore = if (withZscores) ", zscore" else ""
+    val resultsDf = spark.sql(s"""
+      SELECT x,y,z ${withZscore}
+      FROM zscore 
+      ORDER BY zscore DESC, x DESC, y ASC, z DESC
+    """)
     return resultsDf.coalesce(1)
   }
 }
