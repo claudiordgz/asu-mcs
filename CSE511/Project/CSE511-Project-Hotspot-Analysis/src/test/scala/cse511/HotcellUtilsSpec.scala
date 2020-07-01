@@ -37,7 +37,7 @@ object HotcellUtilsSpec extends Specification {
   }
 
   "hotcellAnalysis" should {
-    "match the answers in provided csv" in {
+    "check the results dataframe" in {
       val spark = SparkSession.builder().master("local").appName("testHotcell").getOrCreate()
       val df = cse511.HotcellAnalysis.loadDataSilently(spark, "src/resources/yellow_trip_sample_100000.csv")
       val results = cse511.HotcellUtils.hotcellAnalysis(spark, df, true)
