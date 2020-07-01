@@ -18,7 +18,4 @@ object HotzoneUtils {
     }
     return true
   }
-
-  // YOU NEED TO CHANGE THIS PART
-
 }

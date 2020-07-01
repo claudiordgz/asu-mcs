@@ -60,7 +60,7 @@ object HotcellUtils {
   // if it's one one edge, then it has 18
   // two edges 12
   // three 8
-  def _stNeighbors(minX: Int, maxX: Int, minY: Int, maxY: Int, minZ: Int, maxZ: Int, x: Int, y: Int, z:Int): Int = {
+  def stNeighbors(minX: Int, maxX: Int, minY: Int, maxY: Int, minZ: Int, maxZ: Int, x: Int, y: Int, z:Int): Int = {
     val isOnEdgeX = if (x == minX || x == maxX) 1 else 0 
     val isOnEdgeY = if (y == minY || y == maxY) 1 else 0
     val isOnEdgeZ = if (z == minZ || z == maxZ) 1 else 0
@@ -74,10 +74,7 @@ object HotcellUtils {
     return neighbors
   }
 
-  def stNeighbors = (minX: Int, maxX: Int, minY: Int, maxY: Int, minZ: Int, maxZ: Int, x: Int, y: Int, z:Int) 
-    => _stNeighbors(minX, maxX, minY, maxY, minZ, maxZ, x, y, z)
-  
-  def _stWithin(minX: Double, maxX: Double, minY: Double, maxY: Double, minZ: Double, maxZ: Double, x: Double, y: Double, z:Double): Boolean = {
+  def stWithin(minX: Double, maxX: Double, minY: Double, maxY: Double, minZ: Double, maxZ: Double, x: Double, y: Double, z:Double): Boolean = {
     if (x >= minX && x <= maxX &&
         y >= minY && y <= maxY &&
         z >= minZ && z <= maxZ) {
@@ -85,9 +82,6 @@ object HotcellUtils {
     }
     return false
   } 
-
-  def stWithin = (minX: Double, maxX: Double, minY: Double, maxY: Double, minZ: Double, maxZ: Double, x: Double, y: Double, z:Double) 
-    => _stWithin(minX, maxX, minY, maxY, minZ, maxZ, x, y, z)
 
   def isAdjacent = (i: Int, j: Int) => (i == j+1 || i == j || i == j-1)
 
@@ -113,8 +107,8 @@ object HotcellUtils {
     val numCells = (maxX - minX + 1)*(maxY - minY + 1)*(maxZ - minZ + 1)
 
     pickupInfo.createOrReplaceTempView("coordinates")
-    spark.udf.register("ST_Within", HotcellUtils.stWithin)
-    spark.udf.register("ST_Neighbors", HotcellUtils.stNeighbors)
+    spark.udf.register("ST_Within", (minX: Double, maxX: Double, minY: Double, maxY: Double, minZ: Double, maxZ: Double, x: Double, y: Double, z:Double) => stWithin(minX, maxX, minY, maxY, minZ, maxZ, x, y, z))
+    spark.udf.register("ST_Neighbors", (minX: Int, maxX: Int, minY: Int, maxY: Int, minZ: Int, maxZ: Int, x: Int, y: Int, z:Int)  => stNeighbors(minX, maxX, minY, maxY, minZ, maxZ, x, y, z))
     val cellsDf = spark.sql(s"""
       SELECT 
         x, y, z, count(*) as points,
@@ -141,6 +135,7 @@ object HotcellUtils {
     val results = cellsDf
       .map(row => {
         val pointTimesWeightSum = cellsArray
+          // weight of neighbor cell is 1 or 0
           .filter(cell => HotcellUtils.isNeighbor(row, cell))
           .map(cell => cell.getAs[Long]("points").toDouble)
           .reduce(_+_)
