@@ -15,3 +15,4 @@
 
   - Ubuntu 18
     - Python 3 and pandas, numpy, jupyter notebook
+  - (Optional) Postgres to Load data on Tableau
