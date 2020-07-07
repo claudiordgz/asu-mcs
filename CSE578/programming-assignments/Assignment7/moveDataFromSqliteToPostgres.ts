@@ -60,7 +60,7 @@ function createCheckin(client: Client, checkins: Checkin[]) {
   const singleInsert = (checkin: Checkin) => `(
     ${checkin.id},
     ${checkin.visitorId},
-    to_timestamp('${checkin.checkinTime}', 'dd-mm-yyyy hh24:mi:ss'),
+    to_timestamp('${checkin.checkinTime}', 'yyyy-mm-dd hh24:mi:ss'),
     ${checkin.attraction},
     '${checkin.duration}',
     '${checkin.checkinType}'
@@ -191,7 +191,7 @@ async function main() {
     user: 'postgres',
     database: 'assignment7',
     hostname: 'localhost',
-    password: 'password',
+    password: 'vFFvozTDxBwUdwbGnTTk',
     port: 5432
   })
   await psqlClient.connect()
