@@ -22,5 +22,8 @@
         "*.sql": "postgres"
     },
     "deno.enable": true,
-    "python.pythonPath": "/home/claudiordgz/anaconda3/envs/generic-jupyter/bin/python"
+    "python.pythonPath": "/home/claudiordgz/anaconda3/envs/generic-jupyter/bin/python",
+    "files.watcherExclude": {
+        "**/target": true
+    }
 }
