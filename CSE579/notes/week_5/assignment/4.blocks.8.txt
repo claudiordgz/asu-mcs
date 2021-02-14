@@ -1,0 +1,44 @@
+clingo version 5.4.0
+Reading from 4.blocks.lp ...
+Solving...
+Answer: 1
+move(i,table,0) move(k,table,0) move(c,table,1) move(h,table,1) move(i,table,1) move(j,table,1) move(k,table,1) move(b,table,2) move(c,table,2) move(e,table,2) move(g,table,2) move(h,table,2) move(i,table,2) move(j,table,2) move(k,table,2) move(a,table,3) move(b,table,3) move(c,table,3) move(d,f,3) move(e,table,3) move(h,table,3) move(i,table,3) move(j,table,3) move(k,g,3) move(b,table,4) move(c,k,4) move(e,table,4) move(h,table,4) move(i,d,4) move(j,table,4) move(l,a,4) move(b,c,5) move(e,j,5) move(h,i,5) move(l,table,5) move(m,table,5) move(n,table,5) move(a,e,6) move(l,b,6) move(m,h,6) move(o,table,6) move(n,a,7) move(o,m,7) moves(43)
+Optimization: 43
+Progression : [ 1;43] (Error: 42)
+Answer: 2
+move(i,table,0) move(k,table,0) move(c,table,1) move(h,table,1) move(j,table,1) move(b,table,2) move(e,table,2) move(g,table,2) move(a,table,3) move(d,f,3) move(k,g,3) move(c,k,4) move(e,j,4) move(i,d,4) move(l,n,4) move(a,e,5) move(b,c,5) move(h,i,5) move(l,table,5) move(l,b,6) move(m,h,6) move(n,a,6) move(o,m,7) moves(23)
+Optimization: 23
+Answer: 3
+move(i,c,0) move(k,table,0) move(h,table,1) move(i,table,1) move(j,table,1) move(c,i,2) move(e,j,2) move(k,g,2) move(b,h,3) move(c,k,3) move(d,table,3) move(a,e,4) move(b,c,4) move(i,d,4) move(n,table,4) move(h,i,5) move(l,o,5) move(n,a,5) move(l,b,6) move(m,h,6) move(o,m,7) moves(21)
+Optimization: 21
+Answer: 4
+move(i,c,0) move(k,table,0) move(h,table,1) move(i,table,1) move(j,table,1) move(c,i,2) move(e,j,2) move(k,g,2) move(b,h,3) move(c,k,3) move(d,table,3) move(a,e,4) move(b,c,4) move(i,d,4) move(h,i,5) move(l,b,5) move(n,a,5) move(m,h,6) move(o,table,6) move(o,m,7) moves(20)
+Optimization: 20
+Answer: 5
+move(i,c,0) move(k,table,0) move(h,table,1) move(i,table,1) move(j,table,1) move(c,i,2) move(e,j,2) move(k,g,2) move(b,h,3) move(c,k,3) move(d,table,3) move(a,e,4) move(b,c,4) move(i,d,4) move(h,i,5) move(l,b,5) move(n,a,5) move(m,h,6) move(o,m,7) moves(19)
+Optimization: 19
+Answer: 6
+move(i,table,0) move(k,table,0) move(c,i,1) move(h,table,1) move(j,table,1) move(b,table,2) move(e,j,2) move(k,g,2) move(a,e,3) move(c,k,3) move(d,table,3) move(b,c,4) move(i,d,4) move(h,i,5) move(l,b,5) move(m,h,6) move(n,a,6) move(o,m,7) moves(18)
+Optimization: 18
+Progression : [ 5;18] (Error: 2.6)
+Progression : [ 6;18] (Error: 2)
+Progression : [ 7;18] (Error: 1.57143)
+Progression : [ 8;18] (Error: 1.25)
+Progression : [ 9;18] (Error: 1)
+Progression : [10;18] (Error: 0.8)
+Progression : [11;18] (Error: 0.636364)
+Progression : [12;18] (Error: 0.5)
+Progression : [13;18] (Error: 0.384615)
+Progression : [14;18] (Error: 0.285714)
+Progression : [15;18] (Error: 0.2)
+Progression : [16;18] (Error: 0.125)
+Progression : [17;18] (Error: 0.0588235)
+OPTIMUM FOUND
+
+Models       : 6
+  Optimum    : yes
+Optimization : 18
+Calls        : 1
+Time         : 10.471s (Solving: 6.89s 1st Model: 1.09s Unsat: 2.87s)
+CPU Time     : 45.859s
+Threads      : 8        (Winner: 3)

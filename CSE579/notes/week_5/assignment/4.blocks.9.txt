@@ -1,0 +1,57 @@
+clingo version 5.4.0
+Reading from 4.blocks.lp ...
+Solving...
+Answer: 1
+move(c,table,1) move(i,table,1) move(k,table,1) move(b,table,2) move(c,table,2) move(h,table,2) move(i,table,2) move(j,table,2) move(k,table,2) move(a,table,3) move(b,table,3) move(c,table,3) move(e,table,3) move(g,table,3) move(h,table,3) move(i,table,3) move(j,table,3) move(k,table,3) move(b,table,4) move(c,table,4) move(d,table,4) move(e,table,4) move(f,table,4) move(h,table,4) move(i,table,4) move(j,table,4) move(k,g,4) move(l,a,4) move(b,table,5) move(c,k,5) move(e,j,5) move(f,table,5) move(h,table,5) move(i,d,5) move(l,table,5) move(m,table,5) move(n,table,5) move(a,e,6) move(b,c,6) move(f,table,6) move(h,i,6) move(l,table,6) move(m,table,6) move(n,table,6) move(o,table,6) move(f,table,7) move(l,b,7) move(m,h,7) move(n,a,7) move(o,table,7) move(f,n,8) move(o,m,8) moves(52)
+Optimization: 52
+Progression : [ 1;52] (Error: 51)
+Answer: 2
+move(i,table,0) move(c,table,1) move(h,table,1) move(k,table,1) move(b,table,2) move(g,table,2) move(j,table,2) move(a,table,3) move(e,table,3) move(g,table,3) move(d,table,4) move(k,g,4) move(l,a,4) move(c,k,5) move(e,j,5) move(i,d,5) move(l,table,5) move(n,table,5) move(a,e,6) move(b,c,6) move(h,i,6) move(l,b,7) move(m,h,7) move(n,a,7) move(o,m,8) moves(25)
+Optimization: 25
+Answer: 3
+move(c,table,1) move(i,table,1) move(k,table,1) move(b,table,2) move(h,table,2) move(j,table,2) move(a,table,3) move(e,table,3) move(g,table,3) move(d,table,4) move(k,g,4) move(l,a,4) move(c,k,5) move(e,j,5) move(i,d,5) move(l,table,5) move(n,table,5) move(a,e,6) move(b,c,6) move(h,i,6) move(l,b,7) move(m,h,7) move(n,a,7) move(o,m,8) moves(24)
+Optimization: 24
+Answer: 4
+move(i,table,0) move(c,table,1) move(h,i,1) move(k,table,1) move(b,table,2) move(h,table,2) move(j,table,2) move(k,g,2) move(a,h,3) move(c,k,3) move(e,j,3) move(a,e,4) move(b,c,4) move(d,table,4) move(l,table,4) move(i,d,5) move(l,b,5) move(n,a,5) move(h,i,6) move(l,n,7) move(m,h,7) move(l,b,8) move(o,m,8) moves(23)
+Optimization: 23
+Answer: 5
+move(c,table,1) move(i,table,1) move(k,table,1) move(b,table,2) move(h,table,2) move(j,table,2) move(a,table,3) move(e,table,3) move(d,table,4) move(k,g,4) move(c,k,5) move(e,j,5) move(i,d,5) move(a,e,6) move(b,c,6) move(h,i,6) move(l,table,6) move(l,b,7) move(m,h,7) move(n,a,7) move(o,m,8) moves(21)
+Optimization: 21
+Answer: 6
+move(i,table,0) move(k,table,0) move(c,table,1) move(h,table,1) move(j,table,1) move(b,h,2) move(e,j,2) move(g,table,2) move(a,e,3) move(d,table,3) move(k,g,3) move(c,k,4) move(i,d,4) move(b,c,5) move(n,a,5) move(h,i,6) move(l,b,6) move(o,f,6) move(m,h,7) move(o,m,8) moves(20)
+Optimization: 20
+Answer: 7
+move(k,table,0) move(c,table,1) move(i,table,1) move(j,table,1) move(b,table,2) move(e,j,2) move(h,table,2) move(a,e,3) move(d,table,3) move(k,g,3) move(c,k,4) move(i,d,4) move(l,table,4) move(n,a,4) move(b,c,5) move(h,i,5) move(l,b,6) move(m,h,6) move(o,m,7) moves(19)
+Optimization: 19
+Answer: 8
+move(k,table,0) move(i,table,1) move(j,table,1) move(e,j,2) move(h,table,2) move(c,i,3) move(k,g,3) move(b,h,4) move(c,k,4) move(d,table,4) move(a,e,5) move(b,c,5) move(i,d,5) move(h,i,6) move(l,b,6) move(n,a,6) move(m,h,7) move(o,m,8) moves(18)
+Optimization: 18
+Answer: 9
+move(i,table,0) move(c,i,1) move(h,table,1) move(k,table,1) move(j,table,2) move(k,g,2) move(c,k,3) move(e,j,3) move(b,c,4) move(d,table,4) move(a,e,5) move(i,d,5) move(h,i,6) move(l,b,6) move(n,a,6) move(m,h,7) move(o,m,8) moves(17)
+Optimization: 17
+Progression : [ 2;17] (Error: 7.5)
+Progression : [ 3;17] (Error: 4.66667)
+Progression : [ 4;17] (Error: 3.25)
+Progression : [ 5;17] (Error: 2.4)
+Progression : [ 6;17] (Error: 1.83333)
+Progression : [ 7;17] (Error: 1.42857)
+Progression : [ 8;17] (Error: 1.125)
+Progression : [ 9;17] (Error: 0.888889)
+Answer: 10
+move(i,table,0) move(k,c,0) move(h,table,1) move(j,table,1) move(e,j,2) move(k,g,2) move(c,k,3) move(b,c,4) move(d,table,4) move(a,e,5) move(i,d,5) move(h,i,6) move(l,b,6) move(n,a,6) move(m,h,7) move(o,m,8) moves(16)
+Optimization: 16
+Progression : [10;16] (Error: 0.6)
+Progression : [11;16] (Error: 0.454545)
+Progression : [12;16] (Error: 0.333333)
+Progression : [13;16] (Error: 0.230769)
+Progression : [14;16] (Error: 0.142857)
+Progression : [15;16] (Error: 0.0666667)
+OPTIMUM FOUND
+
+Models       : 10
+  Optimum    : yes
+Optimization : 16
+Calls        : 1
+Time         : 38.609s (Solving: 33.77s 1st Model: 2.68s Unsat: 24.07s)
+CPU Time     : 252.062s
+Threads      : 8        (Winner: 3)
