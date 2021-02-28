@@ -1,0 +1,3 @@
+2 smoke(Y) :- smoke(X), influence(X,Y).
+1 smoke(alice).
+99 influence(alice, bob).
