@@ -1,0 +1,12 @@
+P1: $ clingo ..\simpleInstances\inst1.lp main.lp -c maxstep=10 0
+P2: $ clingo ..\simpleInstances\inst2.lp main2.lp -c maxstep=11 0
+P3: $ clingo ..\simpleInstances\inst3.lp main2.lp -c maxstep=6 0
+P4: $ clingo ..\simpleInstances\inst4.lp main2.lp -c maxstep=5 0
+P5: $ clingo ..\simpleInstances\inst5.lp main.lp -c maxstep=7 0
+
+
+clingo ..\simpleInstances\inst1.lp main.lp -c maxstep=13 0 > outputs\output1.lp & ^
+clingo ..\simpleInstances\inst2.lp main.lp -c maxstep=11 0 > outputs\output2.lp & ^
+clingo ..\simpleInstances\inst3.lp main.lp -c maxstep=7 0 > outputs\output3.lp & ^
+clingo ..\simpleInstances\inst4.lp main.lp -c maxstep=10 0 > outputs\output4.lp & ^
+clingo ..\simpleInstances\inst5.lp main.lp -c maxstep=6 0 > outputs\output5.lp
