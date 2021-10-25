@@ -24,3 +24,9 @@
       1. `conda env create -n=py3.6 python=3.6`
       2. `conda activate py3.6`
       3. `conda install -c potassco clingo`
+
+#### CSE571
+  
+  - Ubuntu
+    - Anaconda with Python 3
+      1. Install pgmpy https://github.com/pgmpy/pgmpy 
