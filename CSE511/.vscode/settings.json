@@ -1,4 +1,5 @@
 {
+    "typescript.tsdk": "node_modules\\typescript\\lib",
     "editor.formatOnSave": false,
     "editor.tabSize": 2,
     "[typescript]": {  // .ts
@@ -19,5 +20,10 @@
     },
     "files.associations": {
         "*.sql": "postgres"
+    },
+    "deno.enable": true,
+    "python.pythonPath": "/home/claudiordgz/anaconda3/envs/generic-jupyter/bin/python",
+    "files.watcherExclude": {
+        "**/target": true
     }
 }

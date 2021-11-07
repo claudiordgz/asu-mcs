@@ -1,11 +1,6 @@
 {
   "recommendations": [
       "esbenp.prettier-vscode",
-      "denoland.vscode-deno",
-      "ckolkman.vscode-postgres",
-      "ms-python.python",
-      "scala-lang.scala",
-      "lightbend.vscode-sbt-scala",
-      "scalameta.metals"
+      "ms-python.python"
   ]
 }

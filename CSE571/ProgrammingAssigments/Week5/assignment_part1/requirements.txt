@@ -1,0 +1,10 @@
+pymunk
+noise
+matplotlib
+scikit-learn
+scipy
+pygame
+pillow
+numpy
+torch
+ipykernel
