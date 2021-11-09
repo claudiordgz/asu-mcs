@@ -17,7 +17,7 @@ def collect_training_data(total_actions):
     #STUDENTS: network_params will be used to store your training data
     # a single sample will be comprised of: sensor_readings, action, collision
     network_params = []
-
+    collision = 0
 
     for action_i in range(total_actions):
         progress = 100*float(action_i)/total_actions
@@ -31,8 +31,7 @@ def collect_training_data(total_actions):
                 _, collision, sensor_readings = sim_env.step(steering_force)
             else:
                 _, collision, _ = sim_env.step(steering_force)
-            
-            print("collision", collision)
+
             if collision:
                 steering_behavior.reset_action()
                 #STUDENTS NOTE: this statement only EDITS collision of PREVIOUS action
@@ -40,17 +39,17 @@ def collect_training_data(total_actions):
                 if action_timestep < action_repeat * .3: #in case prior action caused collision
                     network_params[-1][-1] = collision #share collision result with prior action
                 break
-            
+
 
         #STUDENTS: Update network_params.
-        print(sensor_readings, action)
-        # network_params.append(np.hstack(sensor_readings, action, 0))
-
+        new_reading = np.concatenate((sensor_readings, (action, collision)))
+        assert(len(new_reading) == 7)
+        network_params.append(new_reading)
 
     #STUDENTS: Save .csv here. Remember rows are individual samples, the first 5
     #columns are sensor values, the 6th is the action, and the 7th is collision.
     #Do not title the columns. Your .csv should look like the provided sample.
-
+    np.savetxt("training_data.csv", network_params, delimiter=",")
 
 
 
@@ -59,5 +58,5 @@ def collect_training_data(total_actions):
 
 
 if __name__ == '__main__':
-    total_actions = 100
+    total_actions = 500000
     collect_training_data(total_actions)

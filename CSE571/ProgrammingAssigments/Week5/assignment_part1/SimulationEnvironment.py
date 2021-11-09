@@ -236,8 +236,8 @@ class SimulationEnvironment:
             if(collisions.points):
                 img_pos, img_ori = self.pm2pgP(self.robot.body.position), degrees(self.robot.body.angle)
                 self._apply_image_to_robot(img_pos, img_ori, damage=True)
-                pg.display.flip()
-                time.sleep(.5)
+                # pg.display.flip()
+                # time.sleep(.5)
                 return 1, collisions.points
         return 0, None
 
@@ -341,8 +341,8 @@ class SimulationEnvironment:
 
     def _env_step(self):
         self.space.step(1/50.0)
-        self.clock.tick(10000)
-        self._draw_everything()
+        # self.clock.tick(10000)
+        # self._draw_everything()
 
 
     def pm2pgP(self, pos):
