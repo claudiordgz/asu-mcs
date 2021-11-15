@@ -1,0 +1,3 @@
+(move-east pac1 loc_x1y1 loc_x1y2)
+(move-east pac1 loc_x1y2 loc_x1y3)
+(move-east pac1 loc_x1y3 loc_x1y4)

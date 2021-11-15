@@ -1,0 +1,6 @@
+(move-north pac1 loc_x4y4 loc_x3y4)
+(move-north pac1 loc_x3y4 loc_x2y4)
+(move-west pac1 loc_x2y4 loc_x2y3)
+(move-west pac1 loc_x2y3 loc_x2y2)
+(move-north pac1 loc_x2y2 loc_x1y2)
+(move-west pac1 loc_x1y2 loc_x1y1)
