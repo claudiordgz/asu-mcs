@@ -12,7 +12,7 @@
 * Completion time: 1 hour
 *
 * @author Claudio Rodriguez Rodriguez, Acuna
-* @version 01/16/2022 1.0.0
+* @version 01/16/2022 0.0.1
 */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,9 +42,9 @@ int main(void)
             float height = 0;
             float radius = 0;
             float volumeOfCylinder = 0;
-            printf("Enter height of cylinder:\n");
+            printf("Enter height of cylinder %d:\n", cylinderNumber);
             scanf("%f", &height);
-            printf("Enter radius of cylinder:\n");
+            printf("Enter radius of cylinder %d:\n", cylinderNumber);
             scanf("%f", &radius);
             volumeOfCylinder = height * radius;
             printf("Volume of cylinder %d is %f\n", cylinderNumber, volumeOfCylinder);

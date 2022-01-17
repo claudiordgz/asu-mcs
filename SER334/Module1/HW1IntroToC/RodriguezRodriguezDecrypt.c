@@ -1,10 +1,12 @@
 /**
-* (basic description of the program or class)
+* SER334: Operating Systems & System Programming
+* Introduction to C Programming I
+* Exercise 3: Decryption
 *
-* Completion time: (estimation of hours spent on this program)
+* Completion time: 1h
 *
-* @author (your name), (anyone else, e.g., Acuna, whose code you used)
-* @version (a version number or a date)
+* @author Claudio Rodriguez Rodriguez, Acuna
+* @version 01/16/2022 0.0.1
 */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,6 +71,24 @@ void sort_chunks() {
     //      number. We provide a swap_strings function that you may use. Example
     //      usage: swap_strings(chunks[0], chunks[1]) will swap the contents of
     //      the first and second string.
+    int i = 0;
+    int j = 0;
+    for (i = 0; i < NUMBER_OF_CHUNKS; ++i) {
+
+        int smallestIndexOfLoop = i;
+        int firstStartNumberOfSmallest = chunks[smallestIndexOfLoop][0] - '0';
+        for (j = i+1; j < NUMBER_OF_CHUNKS; ++j) {
+            int currentStartNumber = chunks[j][0] - '0';
+            if(currentStartNumber < firstStartNumberOfSmallest) {
+                smallestIndexOfLoop = j;
+            }
+            if (smallestIndexOfLoop != i) {
+                swap_strings(chunks[i], chunks[smallestIndexOfLoop]);
+            }
+        }
+        printf("%s", chunks[i]+1);
+
+    }
 }
 
 //for each string in the global chunks variable, shifts the characters in it by
@@ -83,6 +103,17 @@ void decrypt_chunks() {
     //		to the active chunk[?] in the outer loop but before the inner loop.
     //		Then the inner loop is only concerned with a single array of
     //		characters rather than an array of strings.)
+    int i = 0;
+    for (i = 0; i < NUMBER_OF_CHUNKS; ++i) {
+
+        char* currentString = chunks[i];
+
+        while (*currentString) {
+            *currentString -= DECRYPTION_SHIFT;
+            currentString++;
+        }
+
+    }
 }
 
 
@@ -92,4 +123,9 @@ void display_chunks() {
     //      message chunks (strings) and print it. Do not print the first
     //      character in each string since it is only used to store the order of
     //      the chunks. (Hint: use pointer arithmetic to skip a character.)
+    int i = 0;
+    printf("\n");
+    for (i = 0; i < NUMBER_OF_CHUNKS; ++i) {
+        printf("%s", chunks[i] + 1);
+    }
 }
