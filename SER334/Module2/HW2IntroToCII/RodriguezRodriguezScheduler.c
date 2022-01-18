@@ -28,7 +28,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //MACROS: CONSTANTS
 #define TEACHER_MAX_NAME (1024)
-#define MAX_RECORDS (1024) 
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
@@ -48,13 +47,6 @@ struct CourseNode {
 	struct CourseNode* next;
 };
 
-struct CourseRecord {
-	int subject;
-	int number;
-	char teacher[TEACHER_MAX_NAME];
-	int creditHours;
-};
-
 ////////////////////////////////////////////////////////////////////////////////
 //GLOBAL VARIABLES
 
@@ -72,8 +64,8 @@ void schedule_save();
 
 void sort_list();
 void delete_list();
-void _course_drop(int subject, int courseNumber);
-struct CourseNode* _course_insert(int subject, int courseNumber, char *teacher, int creditHours);
+void course_drop_from_props(int subject, int courseNumber);
+struct CourseNode* course_insert_from_props(int subject, int courseNumber, char *teacher, int creditHours);
 int calculate_course_count();
 char* getSubjectPrefix(int subject);
 void print_row(struct CourseNode* node);
@@ -148,7 +140,7 @@ void schedule_load() {
 		int credits = 0;
 		char teacher[TEACHER_MAX_NAME];
 		while (fscanf(schedulerState, "%d,%d,%d,%1024[^,\n]\n", &subject, &number, &credits, teacher) == 4) {
-			_course_insert(subject, number, teacher, credits);
+			course_insert_from_props(subject, number, teacher, credits);
 		}
 
 		fclose(schedulerState);
@@ -178,13 +170,13 @@ void course_insert() {
 	printf("String = %s", teacher);
     printf("\n");
 
-	struct CourseNode *newNode = _course_insert(subjectNumber, courseNumber, teacher, credits);
+	struct CourseNode *newNode = course_insert_from_props(subjectNumber, courseNumber, teacher, credits);
 	if (newNode != NULL) {
 		printf("Course %s%d added to the schedule.\n", getSubjectPrefix(newNode->subject), newNode->number);
 	}
 }
 
-struct CourseNode* _course_insert(int subject, int courseNumber, char *teacher, int creditHours) {
+struct CourseNode* course_insert_from_props(int subject, int courseNumber, char *teacher, int creditHours) {
 	struct CourseNode* new_node = (struct CourseNode*) malloc(sizeof(struct CourseNode));
 	new_node->next = NULL;
 	strcpy(new_node->teacher, teacher);
@@ -296,10 +288,10 @@ void course_drop() {
 	scanf("%d", &courseNumber);
     printf("\n");
 
-	_course_drop(subjectNumber, courseNumber);
+	course_drop_from_props(subjectNumber, courseNumber);
 }
 
-void _course_drop(int rSubject, int courseNumber) {
+void course_drop_from_props(int rSubject, int courseNumber) {
 	enum Subject subject = (enum Subject)rSubject;
 	struct CourseNode *iterator = course_collection;
 	if (iterator == NULL) {
