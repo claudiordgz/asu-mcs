@@ -1,10 +1,10 @@
 ﻿/**
 * Specification for an image ADT.
 *
-* Completion time: ?
+* Completion time: 4h
 *
-* @author (your name), Ruben Acuna
-* @version 9/9/2021
+* @author Claudio Rodriguez Rodriguez, Ruben Acuna
+* @version 01/23/2022
 */
 
 #ifndef PixelProcessor_H
@@ -25,9 +25,12 @@ struct Image {
 	int height;
 };
 
-struct Pixel{
-	//TODO: Finish struct
+struct Pixel {
+    unsigned char blue;
+    unsigned char green;
+    unsigned char red;
 };
+typedef struct Pixel Pixel;
 
 ////////////////////////////////////////////////////////////////////////////////
 //Function Declarations
@@ -40,7 +43,6 @@ struct Pixel{
  * @return A pointer to a new image.
 */
 Image* image_create(struct Pixel** pArr, int width, int height);
-
 
 /* Destroys an image. Does not deallocate internal pixel array.
 * 
@@ -90,5 +92,10 @@ void image_apply_colorshift(Image* img, int rShift, int gShift, int bShift);
  * @param  factor: the scaling factor
 */
 void image_apply_resize(Image* img, float factor);
+
+void display_image(struct Pixel** pArr, int width, int height);
+
+// Utility to calculate the padding necessary on a row of pixels
+int calculate_padding(int width);
 
 #endif
