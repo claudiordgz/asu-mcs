@@ -3,6 +3,8 @@ project(Notes C)
 
 set(CMAKE_C_STANDARD 99)
 
+add_library(local-lib SHARED Module3/LinkedList.c)
+
 add_executable(Module2P1 Module2/1MemoryAllocation.c)
 add_executable(Module2P2 Module2/2MemoryAllocation.c)
 add_executable(Module2P3 Module2/3DefiningNewTypes.c)
@@ -14,3 +16,7 @@ add_executable(Module2P8 Module2/8LinkedLists.c)
 add_executable(Module2NStruct1 Module2/99NoteStruct1.c)
 add_executable(Module2QP2 Module2/98Quiz2.c)
 add_executable(Module2QP6 Module2/98Quiz6.c)
+
+add_executable(Module3QP3 Module3/98Quiz3.c)
+add_executable(Module3QP4 Module3/98Quiz4.c)
+add_executable(Module3QP5 Module3/98Quiz5.c Module3/LinkedList.h Module3/LinkedList.c)
