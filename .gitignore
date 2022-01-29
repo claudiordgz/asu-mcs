@@ -269,3 +269,5 @@ spark-warehouse/
 .jvmopts
 
 .metals
+
+linux-5.*
