@@ -8,7 +8,8 @@
 */
 
 #ifndef PixelProcessor_H
-#define PixelProcessor_H 1
+#define PixelProcessor_H
+
 struct Pixel{
 	unsigned char red;
 	unsigned char green;
