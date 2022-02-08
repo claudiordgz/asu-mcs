@@ -20,7 +20,7 @@
 
 // PREPROCESSOR DEFINITIONS
 #define DEBUG 1
-#define THREAD_COUNT 2
+#define THREAD_COUNT 1
 
 // TYPE DEFINITIONS
 typedef enum { blur, cheese } filter_type;
