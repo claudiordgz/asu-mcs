@@ -7,14 +7,6 @@
 #define FILTER_WIDTH 3
 #define FILTER_HEIGHT 3
 
-struct Pixel **create_filter(int width, int height) {
-    struct Pixel **filter = malloc(sizeof(struct Pixel *) * height);
-    for (int i = 0; i < width; i++) {
-        filter[i] = malloc(sizeof(struct Pixel) * width);
-    }
-    return filter;
-}
-
 struct Pixel_Slice {
     struct Pixel **slice;
     int start;
@@ -24,6 +16,8 @@ struct Pixel_Slice {
 };
 
 struct Pixel_Slice** make_slices(struct Pixel** pArr, int threads, int with_padding, int width, int height);
+void _box_blur_filter(struct Pixel_Slice* slice, int width, int height);
+void _cheese_filter(struct Pixel_Slice* slice, int width, int height);
 
 void blur_filter(struct Pixel** pArr, int threads, int width, int height) {
     printf("Applying Blur Box filter...\n");
@@ -35,6 +29,7 @@ void blur_filter(struct Pixel** pArr, int threads, int width, int height) {
             printf("start %d, end %d, width %d, height %d\n", slices[i]->start, slices[i]->end, slices[i]->width, slices[i]->height);
         }
     }
+    
 }
 
 void cheese_filter(struct Pixel** pArr, int threads, int width, int height) {
@@ -86,4 +81,11 @@ struct Pixel_Slice** make_slices(struct Pixel** pArr, int threads, int with_padd
     }
 
     return slices;
+}
+
+void _box_blur_filter(struct Pixel_Slice* slice, int width, int height) {
+
+}
+void _cheese_filter(struct Pixel_Slice* slice, int width, int height) {
+
 }
