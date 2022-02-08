@@ -7,6 +7,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
 add_executable(${PROJECT_NAME} 
     ${CMAKE_CURRENT_SOURCE_DIR}/BmpProcessor.o
     RodriguezRodriguezFilters.c
+    PixelProcessor.c
     FilterProcessor.c
     BmpProcessor.h
     PixelProcessor.h

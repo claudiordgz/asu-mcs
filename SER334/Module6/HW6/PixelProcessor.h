@@ -1,10 +1,10 @@
 /**
 * A utility functions for doing pixel transformations.
 *
-* Completion time: -1 minutes
+* Completion time: 10 minutes
 *
-* @author Vatrcia Edgar
-* @version 1.0
+* @author Claudio Rodriguez Rodriguez, Vatrcia Edgar
+* @version 02/07/2022
 */
 
 #ifndef PixelProcessor_H
@@ -17,5 +17,5 @@ struct Pixel{
 };
 
 //NOT NEEDED FOR THREADING HW.
-void colorShiftPixels(struct Pixel** pArr, int width, int height, int rShift, int gShift, int bShift);
+void colorShiftPixels(struct Pixel** pArr, int width, int height, int rShift, int gShift, int bShift, int leave_black);
 #endif

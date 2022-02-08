@@ -1,10 +1,10 @@
 /**
- * ImageProcessor Main file
+ * Filters Main file
  *
- * Completion time: 12h
+ * Completion time: 1h
  *
  * @author Claudio Rodriguez Rodriguez
- * @version 01/23/2022
+ * @version 02/08/2022
 */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@
 
 // PREPROCESSOR DEFINITIONS
 #define DEBUG 1
-#define THREAD_COUNT 2
+#define THREAD_COUNT 4
 
 // TYPE DEFINITIONS
 typedef enum { blur, cheese } filter_type;
@@ -148,10 +148,11 @@ int main(int argc, char **argv) {
 	writeDIBHeader(file_output, &DIB);
 	writePixelsBMP(file_output, pixels, dib_header.width, dib_header.height);
     fclose(file_output);
-
-    // free(BMP);
-    // free(DIB);
-    // image_destroy(&img);
+    
+    for (int p = 0; p != dib_header.height; p++) {
+        free(pixels[p]);
+    }
+    free(pixels);
     image_processor_options_destroy(&userOptions);
 	
 	return 0;
