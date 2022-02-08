@@ -20,7 +20,7 @@
 
 // PREPROCESSOR DEFINITIONS
 #define DEBUG 1
-#define THREAD_COUNT 1
+#define THREAD_COUNT 2
 
 // TYPE DEFINITIONS
 typedef enum { blur, cheese } filter_type;
@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
             printf("Invalid filter type.\n");
             return 1;
     }
-
+    printf("Writing image to file %s.\n", userOptions->output_file);
     FILE* file_output = fopen(userOptions->output_file, "wb");
     struct BMP_Header BMP;
     struct DIB_Header DIB;
@@ -148,13 +148,6 @@ int main(int argc, char **argv) {
 	writeDIBHeader(file_output, &DIB);
 	writePixelsBMP(file_output, pixels, dib_header.width, dib_header.height);
     fclose(file_output);
-
-    for (int p = 0; p != dib_header.height; p++) {
-        free(pixels[p]);
-        pixels[p] = NULL;
-    }
-    free(pixels);
-    pixels = NULL;
 
     // free(BMP);
     // free(DIB);

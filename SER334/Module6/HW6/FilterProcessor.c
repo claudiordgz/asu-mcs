@@ -23,29 +23,18 @@ struct Pixel_Slice** make_slices(struct Pixel** pArr, int threads, int with_padd
 void* _box_blur_filter(void *arg);
 void* _cheese_filter(void *arg);
 void _copy_slices_into_image(struct Pixel** pArr, struct Pixel_Slice** slices, int threads);
+void apply_threading(struct Pixel** pArr, struct Pixel_Slice** slices, int threads, void* (*filter_func)(void *));
 
 void blur_filter(struct Pixel** pArr, int max_threads, int width, int height) {
     printf("Applying Blur Box filter...\n");
     int thread_cap = max_threads < width ? max_threads : width;
     struct Pixel_Slice **slices = make_slices(pArr, thread_cap, 1, width, height);
-    pthread_t threads[thread_cap];
-    int threads_result[thread_cap];
-    int i = 0;
-    for (i = 0; i != thread_cap; i++) {
-        threads_result[i] = pthread_create(&threads[i], NULL, _box_blur_filter, slices[i]);
-        if (threads_result[i] != 0) {
-            printf("ERORR = pthread_create() returned %d\n", threads_result[i]);
-            exit(EXIT_FAILURE);
-        }
-    }
-    void* retval;
-    for (int i = 0; i < thread_cap; i++) {
-        pthread_join(threads[i], &retval);
-    }
-    printf("joining");
-    _copy_slices_into_image(pArr, slices, thread_cap);
-
-    for (int i = 0; i < thread_cap; i++) {
+    apply_threading(pArr, slices, thread_cap, _box_blur_filter);
+    
+    if (DEBUG) 
+        printf("Deleting slices\n");
+    
+    for (int i = 0; i < max_threads; i++) {
         free(slices[i]);
         slices[i] = NULL;
     }
@@ -57,7 +46,38 @@ void cheese_filter(struct Pixel** pArr, int max_threads, int width, int height) 
     printf("Applying Cheese filter...\n");
     int thread_cap = max_threads < width ? max_threads : width;
     struct Pixel_Slice **slices = make_slices(pArr, thread_cap, 0, width, height);
+    apply_threading(pArr, slices, thread_cap, _cheese_filter);
 
+    if (DEBUG) 
+        printf("Deleting slices\n");
+    
+    for (int i = 0; i < max_threads; i++) {
+        free(slices[i]);
+        slices[i] = NULL;
+    }
+    free(slices);
+    slices = NULL;
+}
+
+void apply_threading(struct Pixel** pArr, struct Pixel_Slice** slices, int max_threads, void* (*filter_func)(void *)) {
+    pthread_t threads[max_threads];
+    int threads_result[max_threads];
+    int i = 0;
+    for (i = 0; i != max_threads; i++) {
+        threads_result[i] = pthread_create(&threads[i], NULL, filter_func, slices[i]);
+        if (threads_result[i] != 0) {
+            printf("ERORR = pthread_create() returned %d\n", threads_result[i]);
+            exit(EXIT_FAILURE);
+        }
+    }
+    void* retval;
+    for (int i = 0; i < max_threads; i++) {
+        pthread_join(threads[i], &retval);
+    }
+    if (DEBUG) 
+        printf("Slices to image\n");
+    
+    _copy_slices_into_image(pArr, slices, max_threads);
 }
 
 struct Pixel_Slice** make_slices(struct Pixel** pArr, int threads, int with_padding, int width, int height) {
@@ -93,18 +113,23 @@ struct Pixel_Slice** make_slices(struct Pixel** pArr, int threads, int with_padd
         slices[i]->width = row_width;
         slices[i]->height = height;
     }
+    if (DEBUG){
+        for (i = 0; i < threads; i++) {
+            printf("%d: offset: %d, start: %d, end: %d, width: %d\n", i, slices[i]->offset, slices[i]->start, slices[i]->end, slices[i]->width);
+        }
+    }
 
     return slices;
 }
 
 void _copy_slices_into_image(struct Pixel** pArr, struct Pixel_Slice** slices, int threads) {
-    printf("copying");
+    printf("copying\n");
     for (int i = 0; i < threads; i++) {
         for (int row = 0; row != slices[i]->height; row++) {
-            for (int col = 0; col != slices[i]->end; col++) {
-                pArr[row][slices[i]->offset + col].red = slices[i]->slice[row][col].red;
-                pArr[row][slices[i]->offset + col].green = slices[i]->slice[row][col].green;
-                pArr[row][slices[i]->offset + col].blue = slices[i]->slice[row][col].blue;
+            for (int col = slices[i]->start; col != slices[i]->end; col++) {
+                pArr[row][slices[i]->offset + col - slices[i]->start].red = slices[i]->slice[row][col].red;
+                pArr[row][slices[i]->offset + col - slices[i]->start].green = slices[i]->slice[row][col].green;
+                pArr[row][slices[i]->offset + col - slices[i]->start].blue = slices[i]->slice[row][col].blue;
             }
         }
     }
@@ -146,28 +171,28 @@ void* _box_blur_filter(void *arg) {
                 count++;
             }
             // top
-            if (row - 1 >= 0 && col >= 0) {
+            if (row - 1 >= 0) {
                 p2.red = slice->slice[row - 1][col].red;
                 p2.green = slice->slice[row - 1][col].green;
                 p2.blue = slice->slice[row - 1][col].blue;
                 count++;
             }
             // top right
-            if (row - 1 >= 0 && col + 1 < slice->width) {
+            if (row - 1 >= 0 && col + 1 < slice->width - 1) {
                 p3.red = slice->slice[row - 1][col + 1].red;
                 p3.green = slice->slice[row - 1][col + 1].green;
                 p3.blue = slice->slice[row - 1][col + 1].blue;
                 count++;
             }
             // left
-            if (row >= 0 && col - 1 >= 0) {
+            if (col - 1 >= 0) {
                 p4.red = slice->slice[row][col - 1].red;
                 p4.green = slice->slice[row][col - 1].green;
                 p4.blue = slice->slice[row][col - 1].blue;
                 count++;
             }
             // right
-            if (row >= 0 && col + 1 < slice->width) {
+            if (col + 1 < slice->width - 1) {
                 p6.red = slice->slice[row][col + 1].red;
                 p6.green = slice->slice[row][col + 1].green;
                 p6.blue = slice->slice[row][col + 1].blue;
@@ -181,14 +206,14 @@ void* _box_blur_filter(void *arg) {
                 count++;
             }
             // bottom
-            if (row + 1 < slice->height && col >= 0) {
+            if (row + 1 < slice->height) {
                 p8.red = slice->slice[row + 1][col].red;
                 p8.green = slice->slice[row + 1][col].green;
                 p8.blue = slice->slice[row + 1][col].blue;
                 count++;
             }
             // bottom right
-            if (row + 1 < slice->height && col + 1 < slice->width) {
+            if (row + 1 < slice->height && col + 1 < slice->width - 1) {
                 p9.red = slice->slice[row + 1][col + 1].red;
                 p9.green = slice->slice[row + 1][col + 1].green;
                 p9.blue = slice->slice[row + 1][col + 1].blue;
