@@ -16,9 +16,11 @@
 #include <pthread.h>
 #include "BmpProcessor.h"
 #include "PixelProcessor.h"
+#include "FilterProcessor.h"
 
 // PREPROCESSOR DEFINITIONS
 #define DEBUG 1
+#define THREAD_COUNT 2
 
 // TYPE DEFINITIONS
 typedef enum { blur, cheese } filter_type;
@@ -125,42 +127,39 @@ int main(int argc, char **argv) {
     readPixelsBMP(file, pixels, dib_header.width, dib_header.height);
     fclose(file);
 
-    // if (DEBUG) {
-    //     display_image(pixels, dib_header.width, dib_header.height);
-    // }
+    switch(userOptions->filter) {
+        case blur:
+            blur_filter(pixels, THREAD_COUNT, dib_header.width, dib_header.height);
+            break;
+        case cheese:
+            cheese_filter(pixels, THREAD_COUNT, dib_header.width, dib_header.height);
+            break;
+        default:
+            printf("Invalid filter type.\n");
+            return 1;
+    }
 
-    // if (userOptions->w) {
-    //     image_apply_bw(img);
-    // }
+    FILE* file_output = fopen(userOptions->output_file, "wb");
+    struct BMP_Header BMP;
+    struct DIB_Header DIB;
+    makeBMPHeader(&BMP, dib_header.width, dib_header.height);
+    makeDIBHeader(&DIB, dib_header.width, dib_header.height);
+    writeBMPHeader(file_output, &BMP);
+	writeDIBHeader(file_output, &DIB);
+	writePixelsBMP(file_output, pixels, dib_header.width, dib_header.height);
+    fclose(file_output);
 
-    // image_apply_colorshift(img, userOptions->r_value, userOptions->g_value, userOptions->b_value);
-
-    // if (userOptions->scaling_flag) {
-    //     image_apply_resize(img, userOptions->scaling_factor);
-    // }
-
-    // FILE* file_output = fopen(userOptions->output_file, "wb");
-    // BMP_Header *BMP = (BMP_Header*)malloc(sizeof(BMP_Header));
-    // DIB_Header *DIB = (DIB_Header*)malloc(sizeof(DIB_Header));
-    // makeBMPHeader(BMP, img->width, img->height);
-    // makeDIBHeader(DIB, img->width, img->height);
-    // writeBMPHeader(file_output, BMP);
-	// writeDIBHeader(file_output, DIB);
-	// writePixelsBMP(file_output, image_get_pixels(img), image_get_width(img), image_get_height(img));
-    // fclose(file_output);
-
-
-    // for (int p = 0; p != image_get_height(img); p++) {
-    //     free(img->pArr[p]);
-    //     img->pArr[p] = NULL;
-    // }
-    // free(img->pArr);
-    // img->pArr = NULL;
+    for (int p = 0; p != dib_header.height; p++) {
+        free(pixels[p]);
+        pixels[p] = NULL;
+    }
+    free(pixels);
+    pixels = NULL;
 
     // free(BMP);
     // free(DIB);
     // image_destroy(&img);
-    // image_processor_options_destroy(&userOptions);
+    image_processor_options_destroy(&userOptions);
 	
 	return 0;
 }
@@ -286,6 +285,7 @@ ImageProcessorOptions* image_processor_create(Cli_Options* cli_options) {
         strcpy(image_options->output_file, cli_options->output_file);
     } else {
         int n = 0;
+
         int len = strlen(cli_options->input_filename);
         for (int i = len; i > -1; i--) {
             if (cli_options->input_filename[i] == '.') {
@@ -297,6 +297,7 @@ ImageProcessorOptions* image_processor_create(Cli_Options* cli_options) {
         if (n != 0) {
             char trimmed[256];
             memcpy(trimmed, cli_options->input_filename, n);
+            trimmed[n] = '\0';
             strcpy(image_options->output_file, strcat(trimmed, "_copy.bmp"));
         } else {
             strcpy(image_options->output_file, strcat(cli_options->input_filename, "_copy.bmp"));

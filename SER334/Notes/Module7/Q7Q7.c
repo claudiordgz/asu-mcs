@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 //represents a mutex
 struct mutex_lock {
@@ -18,10 +19,16 @@ struct mutex_lock* mutex_create(void) {
     return m;
 }
 
+bool test_and_set(int *pInt);
+
 //locks mutex
 void mutex_acquire(struct mutex_lock* m) {
     //TODO
     while(test_and_set(&m->lock));
+}
+
+bool test_and_set(int *pInt) {
+    return 0;
 }
 
 //unlockes mutex
