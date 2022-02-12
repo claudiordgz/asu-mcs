@@ -27,7 +27,7 @@ host* host_create();
 * Shuts down the host environment. Ensures any outstanding batches have
 * completed.
 */
-void host_destroy(host**);
+void host_destroy(host** h);
 
 /**
 * Creates a new server instance (i.e., thread) to handle processing the items
