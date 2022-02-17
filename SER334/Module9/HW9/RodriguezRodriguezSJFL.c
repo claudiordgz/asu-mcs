@@ -391,7 +391,7 @@ void sjfl(Jobs *jobs) {
             ticks_in_order[j][0] = j; 
             ticks_in_order[j][1] = current_tau;
             time += current_ticks;
-            turnaround_time += current_tau;
+            turnaround_time += current_ticks;
             
             previous_rows[j].t_v = current_ticks;
             previous_rows[j].tau_v = current_tau;
