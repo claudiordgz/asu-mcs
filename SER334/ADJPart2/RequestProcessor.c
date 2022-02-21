@@ -2,6 +2,8 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+
 #include "RequestProcessor.h"
 #include "queue.h"
 
@@ -68,6 +70,7 @@ void* process_queue(void *result) {
       free_request((void*)request);
     }
   }
+  // cancel, approve, deny
   pthread_mutex_lock(&worker->lock);
     printf("Queue worker exiting\n");
     while (size(worker->requests) > 0) {
@@ -103,7 +106,7 @@ void destroy_request_processor(RequestProcessor **rp) {
 }
 void add_request(RequestProcessor *rp, int room, int access_level, int door, int* data_return) {
   printf("Adding request room %d, door %d, %d access\n", room, door, access_level);
-  Request *request = malloc(sizeof(Request));
+  Request *request = (Request *)malloc(sizeof(Request));
   request->room = room;
   request->access_level = access_level;
   request->door = door;
@@ -132,23 +135,40 @@ void print_request(void *data) {
 ////////////////////////////////////////////////////////////////////////////////
 // Request functions
 ////////////////////////////////////////////////////////////////////////////////
+
+unsigned int random_between(unsigned int min, unsigned int max)
+{
+  return (int)(rand() % (max + 1 - min)) + min;
+}
+
+int wait_for_n_seconds() {
+  int max_time = 5;
+  int control_room_mock_answer = random_between(0, 30);
+  while (max_time > 0) {
+    if (control_room_mock_answer == 0) {
+      return random_between(0,1);
+    }
+    printf("Waiting for control room answer: %d\n", control_room_mock_answer);
+    sleep(1);
+    control_room_mock_answer--;
+    max_time--;
+  }
+  return -1;
+}
+
 void process_request(Request *request) {
   if (request->room == Inner) {
     // 2. get answer from control room 
-    *request->response = 1;
+    // sleep for 1 second at a time to wait for control room
+    // set an interval to check for control room answer (don't sleep for N)
+    // if control room answer is received, break
+    int control_room_approval = wait_for_n_seconds();
+    *request->response = control_room_approval;
   } else {
-    *request->response = 0;
-  }
-  if (request->access_level == 1) {
-    if (request->door == A) {
-    } else {
-      if (request->room == Inner) {
-        *request->response = 0;
-      } else {
-        *request->response = 1;
-      }
-    }
-  } else {
-    *request->response = 1;
+    // get door states
+    // if door is open, wait for it to close
+    // if it doesnt close in N seconds, deny
+    int control_room_approval = wait_for_n_seconds();
+    *request->response = control_room_approval;
   }
 }
