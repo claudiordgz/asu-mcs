@@ -10,7 +10,7 @@ struct Queue {
 typedef struct Queue Queue;
 
 Queue * create_queue();
-void enqueue(Queue *q, void *data);
+void enqueue(Queue *q, void *data, int priority);
 void* pop(Queue *q);
 void* peek(Queue *q);
 int size(Queue *q);

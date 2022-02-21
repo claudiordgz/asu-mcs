@@ -7,6 +7,7 @@
 struct node {
   void *data;
   struct node *next;
+  int priority;
 };
 
 Queue* create_queue() {
@@ -16,7 +17,7 @@ Queue* create_queue() {
   q->size = 0;
   return q;
 }
-void enqueue(Queue *q, void *data) {
+void enqueue(Queue *q, void *data, int priority) {
   Node *n = malloc(sizeof(Node));
   n->data = data;
   n->next = NULL;
@@ -24,8 +25,25 @@ void enqueue(Queue *q, void *data) {
     q->front = n;
     q->back = n;
   } else {
-    q->back->next = n;
-    q->back = n;
+    if (priority < q->front->priority) {
+      q->front = q->front->next;
+      n->next = q->front;
+      q->front = n;
+    } else if (priority == q->front->priority) {
+      Node *curr = q->front;
+      while (curr->next != NULL && curr->next->priority == priority) {
+        curr = curr->next;
+      }
+      n->next = curr->next;
+      curr->next = n;
+    } else {
+      Node *curr = q->front;
+      while (curr->next != NULL && curr->next->priority < priority) {
+        curr = curr->next;
+      }
+      n->next = curr->next;
+      curr->next = n;
+    }
   }
   q->size++;
 }
