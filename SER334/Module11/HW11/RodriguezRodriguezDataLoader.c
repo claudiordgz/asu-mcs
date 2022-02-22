@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "DataLoader.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 void display_scenario(struct test_scenario* s);
 
