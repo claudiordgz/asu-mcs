@@ -14,7 +14,7 @@ int main(void) {
     srand(time(NULL));
     // scanf get action
     rp = create_request_processor();
-    int number_of_requests = 30;
+    int number_of_requests = 10;
     pthread_t threads[number_of_requests];
 
     for (int i = 0; i < number_of_requests; i++) {
@@ -44,7 +44,7 @@ void *simulate_door_open(void *thread_n) {
 
     //make request to balance to complete job and wait for it's completion.
 
-    add_request(rp, room, access_level, door, result);
+    add_request(rp, t_id, room, access_level, door, result);
     while (*result == -99);
 
     int r = *result;

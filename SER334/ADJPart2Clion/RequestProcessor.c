@@ -20,6 +20,7 @@ enum Room {
 };
 
 struct Request {
+    int id;
     enum Door door;
     enum Room room;
     int access_level;
@@ -36,13 +37,11 @@ struct QueueWorker {
     int run_worker;
 };
 typedef struct QueueWorker QueueWorker;
-QueueWorker *queue_worker = NULL;
 
 QueueWorker *create_queue_worker();
-
 void destroy_queue_worker(QueueWorker **worker);
-
 void *process_queue(void *result);
+void wait_for_room_to_close();
 
 ////////////////////////////////////////////////////////////////////////////////
 // QueueWorker functions
@@ -118,10 +117,11 @@ void destroy_request_processor(RequestProcessor **rp) {
     *rp = NULL;
 }
 
-void add_request(RequestProcessor *rp, int room, int access_level, int door, int *data_return) {
+void add_request(RequestProcessor *rp, int id, int room, int access_level, int door, int *data_return) {
     if (DEBUG)
         printf("Adding request room %d, door %d, %d access\n", room, door, access_level);
     Request *request = (Request *) malloc(sizeof(Request));
+    request->id = id;
     request->room = room;
     request->access_level = access_level;
     request->door = door;
@@ -154,10 +154,17 @@ void print_request(void *data) {
 // Request functions
 ////////////////////////////////////////////////////////////////////////////////
 
+#define CONTROL_ROOM_MAX_WTIME 5
+#define DOOR_OPENED_MAX_WTIME 1
+#define REQUEST_APPROVAL_POST_WTIME 2
+
+// A utility function to generate a random number with bounds
 unsigned int random_between(unsigned int min, unsigned int max) {
     return (int) (rand() % (max + 1 - min)) + min;
 }
 
+// an interval wait period to control the "bounded waiting time
+// We will wait for max time, in intervals of one second at a time
 int wait_for_n_seconds(char *str, int max_wait_time, int max_answer_time) {
     int max_time = max_wait_time;
     int control_room_mock_answer = random_between(0, max_answer_time);
@@ -174,19 +181,49 @@ int wait_for_n_seconds(char *str, int max_wait_time, int max_answer_time) {
     return -1;
 }
 
+// A utility to check for user access, anything higher than 5 is denied
+// for test purposes
+int check_user_access(int access_level) {
+    if (access_level > 5) {
+        return 0;
+    }
+    return 1;
+}
+
+// when approving a request we will wait for
+void wait_for_room_to_close() {
+    sleep(REQUEST_APPROVAL_POST_WTIME);
+}
+
 void process_request(Request *request) {
+    int user_access = check_user_access(request->access_level);
+    if (!user_access) {
+        *request->response = 0;
+    }
     if (request->room == Inner) {
-        // 2. get answer from control room
-        // sleep for 1 second at a time to wait for control room
-        // set an interval to check for control room answer (don't sleep for N)
-        // if control room answer is received, break
-        int control_room_approval = wait_for_n_seconds("control room", 5, 6);
-        *request->response = control_room_approval;
+        // 1. If there’s a door opened, deny the request
+        int door_is_opened = wait_for_n_seconds("door", DOOR_OPENED_MAX_WTIME, DOOR_OPENED_MAX_WTIME + 1);
+        if (!door_is_opened) {
+            // 2. Emulate control room approval
+            int control_room_approval = wait_for_n_seconds("control room", CONTROL_ROOM_MAX_WTIME, CONTROL_ROOM_MAX_WTIME + 1);
+            *request->response = control_room_approval;
+            if (control_room_approval)
+                // 3. Only if request was approved then wait
+                wait_for_room_to_close();
+        } else {
+            printf("Door is opened: %d\n", request->id);
+            *request->response = 0;
+        }
     } else {
-        // get door states
-        // if door is open, wait for it to close
-        // if it doesnt close in N seconds, deny
-        int control_room_approval = wait_for_n_seconds("door", 5, 4);
-        *request->response = control_room_approval;
+        int door_is_opened = wait_for_n_seconds("door", DOOR_OPENED_MAX_WTIME, DOOR_OPENED_MAX_WTIME + 1);
+        if (!door_is_opened) {
+            // No door Opened, valid access, approve request
+            *request->response = 1;
+            wait_for_room_to_close();
+        } else {
+            printf("Door is opened: %d\n", request->id);
+            *request->response = 0;
+        }
     }
 }
+
