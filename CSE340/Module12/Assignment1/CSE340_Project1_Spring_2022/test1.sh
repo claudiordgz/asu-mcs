@@ -2,7 +2,7 @@
 
 let count=0;
 for f in $(ls ./tests/*.txt); do
-	echo "<$f > ./tests/`basename $f .txt`.output;"
+	# echo "<$f > ./tests/`basename $f .txt`.output;"
 	./a.out <$f > ./tests/`basename $f .txt`.output; 
 done;
 
@@ -11,16 +11,16 @@ for f in $(ls ./tests/*.output); do
 done
 
 for f in $(ls tests/*.diff); do
-	echo "========================================================";
-	echo "FILE:" `basename $f .output`;
-	echo "========================================================";
 	if [ -s $f ]; then
+		echo "========================================================";
+		echo "FILE:" `basename $f .output`;
+		echo "========================================================";
 		cat ./tests/`basename $f .diff`.txt;
 		echo "--------------------------------------------------------";
 		cat $f
 	else
 		count=$((count+1));
-		echo "NO ERRORS HERE!";
+		# echo "NO ERRORS HERE!";
 	fi
 done
 

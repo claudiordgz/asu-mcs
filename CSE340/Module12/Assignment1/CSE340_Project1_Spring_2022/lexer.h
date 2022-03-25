@@ -52,8 +52,6 @@ class LexicalAnalyzer {
     Token ScanNumber();
     Token ScanBaseSuffix();
 
-    std::tuple<TokenType, std::string> GetRealNumber();
-    std::tuple<TokenType, std::string> GetBaseNumber();
 };
 
 #endif  //__LEXER__H__

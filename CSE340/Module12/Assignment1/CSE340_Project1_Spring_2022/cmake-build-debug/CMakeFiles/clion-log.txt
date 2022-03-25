@@ -1,4 +1,0 @@
-C:\Windows\system32\wsl.exe --distribution Ubuntu --exec /bin/bash -c "export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd /home/claudiordgz/asu-mcs/CSE340/Module12/Assignment1/CSE340_Project1_Spring_2022/cmake-build-debug && /usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' /home/claudiordgz/asu-mcs/CSE340/Module12/Assignment1/CSE340_Project1_Spring_2022"
--- Configuring done
--- Generating done
--- Build files have been written to: /home/claudiordgz/asu-mcs/CSE340/Module12/Assignment1/CSE340_Project1_Spring_2022/cmake-build-debug

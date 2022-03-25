@@ -9,6 +9,8 @@
 #include <string>
 #include <cctype>
 #include <tuple>
+#include <algorithm>
+#include <stack>
 
 #include "lexer.h"
 #include "inputbuf.h"
@@ -27,6 +29,10 @@ string reserved[] = { "END_OF_FILE",
 
 #define KEYWORDS_COUNT 5
 string keyword[] = { "IF", "WHILE", "DO", "THEN", "PRINT" };
+
+std::tuple<TokenType, std::string> GetRealNumber(std::string currentLexeme, InputBuffer &input);
+std::tuple<TokenType, std::string> GetBaseNumber(std::string currentLexeme, InputBuffer &input);
+std::tuple<TokenType, std::string> GetHexNumber(std::string currentLexeme, InputBuffer &input);
 
 void Token::Print()
 {
@@ -83,52 +89,16 @@ TokenType LexicalAnalyzer::FindKeywordIndex(string s)
     return ERROR;
 }
 
-std::tuple<TokenType, std::string> LexicalAnalyzer::GetRealNumber() {
-    char c;
-    std:string s;
-    input.GetChar(c);
-    if (isdigit(c)) {
-        s += '.';
-        while (!input.EndOfInput() && isdigit(c)) {
-            s += c;
-            input.GetChar(c);
-        }
-        if (!input.EndOfInput()) {
-            input.UngetChar(c);
-        }
-        return std::make_tuple(REALNUM, s);
+std::string invokeType(TokenType &type, InputBuffer &input, std::string currentLexeme, std::tuple<TokenType, std::string> (*func)(std::string, InputBuffer &)) {
+    auto typeAndLexeme = func(currentLexeme, input);
+    TokenType t = std::get<0>(typeAndLexeme);
+    std::string lexeme = std::get<1>(typeAndLexeme);
+    if (t != ERROR) {
+        type = t;
+        return lexeme;
+    } else {
+        return "";
     }
-    input.UngetChar(c);
-    return std::make_tuple(ERROR, s);
-}
-
-std::tuple<TokenType, std::string> LexicalAnalyzer::GetBaseNumber() {
-    char first;
-    std::string s;
-    input.GetChar(first);
-    if (first == '0') {
-        char second;
-        input.GetChar(second);
-        if (second == '8') {
-            s += 'x';
-            s += first;
-            s += second;
-            return std::make_tuple(BASE08NUM, s);
-        }
-        input.UngetChar(second);
-    } else if (first == '1') {
-        char second;
-        input.GetChar(second);
-        if (second == '6') {
-            s += 'x';
-            s += first;
-            s += second;
-            return std::make_tuple(BASE16NUM, s);
-        }
-        input.UngetChar(second);
-    }
-    input.UngetChar(first);
-    return std::make_tuple(ERROR, s);
 }
 
 Token LexicalAnalyzer::ScanNumber()
@@ -152,28 +122,28 @@ Token LexicalAnalyzer::ScanNumber()
         // TODO: You can check for REALNUM, BASE08NUM and BASE16NUM here!
         TokenType type = NUM;
         char isOtherType;
+        std::string possibleLexeme = "";
         input.GetChar(isOtherType);
         if (isOtherType == '.') {
-            auto typeAndLexeme = GetRealNumber();
-            TokenType t = std::get<0>(typeAndLexeme);
-            if (t != ERROR) {
-                tmp.lexeme += std::get<1>(typeAndLexeme);
-                type = t;
-            } else {
+            possibleLexeme = invokeType(type, input, tmp.lexeme, &GetRealNumber);
+            if (possibleLexeme.size() == 0)
                 input.UngetChar(isOtherType);
-            }
+            else
+                tmp.lexeme += possibleLexeme;
         } else if (isOtherType == 'x') {
-            auto typeAndLexeme = GetBaseNumber();
-            TokenType t = std::get<0>(typeAndLexeme);
-            if (t != ERROR) {
-                tmp.lexeme += std::get<1>(typeAndLexeme);
-                type = t;
-            } else {
+            possibleLexeme = invokeType(type, input, tmp.lexeme, &GetBaseNumber);
+            if (possibleLexeme.size() == 0)
                 input.UngetChar(isOtherType);
-            }
+            else
+                tmp.lexeme += possibleLexeme;
         } else {
             input.UngetChar(isOtherType);
+            possibleLexeme = invokeType(type, input, tmp.lexeme, &GetHexNumber);
+            if (possibleLexeme.size() != 0)
+                tmp.lexeme += possibleLexeme;
+
         }
+
         tmp.token_type = type;
         tmp.line_no = line_no;
         return tmp;
@@ -337,6 +307,110 @@ Token LexicalAnalyzer::GetToken()
     }
 }
 
+
+std::tuple<TokenType, std::string> GetRealNumber(std::string currentLexeme, InputBuffer &input) {
+    char c;
+    std:string s;
+    input.GetChar(c);
+    if (isdigit(c)) {
+        s += '.';
+        while (!input.EndOfInput() && isdigit(c)) {
+            s += c;
+            input.GetChar(c);
+        }
+        if (!input.EndOfInput()) {
+            input.UngetChar(c);
+        }
+        return std::make_tuple(REALNUM, s);
+    }
+    input.UngetChar(c);
+    return std::make_tuple(ERROR, s);
+}
+
+std::tuple<TokenType, std::string> GetBaseNumber(std::string currentLexeme, InputBuffer &input) {
+    char first;
+    std::string s;
+    input.GetChar(first);
+    bool invalidbase8 = currentLexeme.find("9") != std::string::npos || currentLexeme.find("8") != std::string::npos;
+    if (first == '0' && !invalidbase8) {
+        
+        if (input.EndOfInput()) {
+            input.UngetChar(first);
+            return std::make_tuple(ERROR, s);
+        }
+
+        char second;
+        input.GetChar(second);
+        if (second == '8') {
+            s += 'x';
+            s += first;
+            s += second;
+            return std::make_tuple(BASE08NUM, s);
+        }
+        input.UngetChar(second);
+    } else if (first == '1') {
+        
+        if (input.EndOfInput()) {
+            input.UngetChar(first);
+            return std::make_tuple(ERROR, s);
+        }
+
+        char second;
+        input.GetChar(second);
+        if (second == '6') {
+            s += 'x';
+            s += first;
+            s += second;
+            return std::make_tuple(BASE16NUM, s);
+        }
+        input.UngetChar(second);
+    }
+    input.UngetChar(first);
+    return std::make_tuple(ERROR, s);
+}
+
+std::tuple<TokenType, std::string> GetHexNumber(std::string currentLexeme, InputBuffer &input) {
+    char c;
+    std:string s;
+    std::stack<char> chars;             
+    std::vector<char> hex_alpha = {'A', 'B', 'C', 'D', 'E', 'F'};
+    std::vector<char> hex_digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    
+    chars.push('z');
+    input.GetChar(chars.top());
+    
+    if (std::find(hex_alpha.begin(), hex_alpha.end(), chars.top()) != hex_alpha.end()) {
+        if (input.EndOfInput()) {
+            input.UngetChar(chars.top());
+            return std::make_tuple(ERROR, s);
+        }
+        while (!input.EndOfInput() && std::find(hex_digits.begin(), hex_digits.end(), chars.top()) != hex_digits.end()) {
+            s += chars.top();
+            chars.push('z');
+            input.GetChar(chars.top());
+        }
+        if (chars.top() == 'x') {
+            TokenType type = ERROR;
+            string possibleLexeme = invokeType(type, input, currentLexeme, &GetBaseNumber);
+            if (possibleLexeme.size() != 0 && type == BASE16NUM) {
+                s += possibleLexeme;
+                return std::make_tuple(type, s);
+            }
+        }
+        
+        // unget all chars in reverse order
+        while (!chars.empty())
+        {
+            input.UngetChar(chars.top());
+            chars.pop();
+        }
+        return std::make_tuple(ERROR, s);
+    }
+
+    input.UngetChar(chars.top());
+    return std::make_tuple(ERROR, s);
+}
+
 int main()
 {
     LexicalAnalyzer lexer;
@@ -350,3 +424,4 @@ int main()
         token.Print();
     }
 }
+
