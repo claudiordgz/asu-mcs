@@ -1,0 +1,309 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor,colortbl}
+\usepackage{textcomp} 
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\renewcommand{\familydefault}{\sfdefault}
+
+\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+\definecolor{Gray}{gray}{0.95}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcolumntype{a}{>{\columncolor{Gray}}l}
+\newcolumntype{b}{>{\columncolor{white}}c}
+
+\graphicspath{{./img/}}
+
+
+% Listings
+
+\lstset{numbers=none,numberblanklines=false,columns=fullflexible,basicstyle=\ttfamily,linewidth=\columnwidth,breaklines=true}
+
+\newcommand{\CodeSymbol}[1]{\bfseries\textcolor{violet}{#1}}   % Code associated to defining styles
+\newcommand{\InitColor}[1]{\bfseries\textcolor{orange}{#1}}   % Code associated to defining styles
+\newcommand{\RedColor}[1]{\bfseries\textcolor{red}{#1}}   % Code associated to defining styles
+\newcommand{\PairColor}[1]{\bfseries\textcolor{blue}{#1}}   % Code associated to defining styles
+\newcommand{\CustomFunction}[1]{\bfseries\textcolor{magenta}{#1}}   % Code associated to defining styles
+
+\definecolor{codegray}{gray}{0.95}
+\definecolor{commentgray}{gray}{0.35}
+
+\makeatletter
+
+\lstdefinelanguage{clingo}{%
+  basicstyle=\footnotesize\ttfamily,%
+  backgroundcolor=\color{codegray},%
+  showstringspaces=false,%
+  alsoletter=0123456789,%
+  columns=fullflexible,%
+  resetmargins=true,%
+  breaklines=true,%
+  keywords=[3]{&,&dom,&sum,&diff,&show},%
+  morecomment=[l]{\#\ },%
+  morecomment=[l]{\%\ },%
+  morestring=[b]",%
+  stringstyle={\itshape},%
+  commentstyle={\color{commentgray}},%
+  literate={init}{{\InitColor{init}}}1
+           {not}{{\RedColor{not }}}1
+           {pair}{{\PairColor{pair}}}1
+           {onNode}{{\CustomFunction{onNode}}}1
+           {occurs}{{\CustomFunction{occurs}}}1
+           {action}{{\CustomFunction{action}}}1
+           {move}{{\CodeSymbol{move}}}1
+           {robot}{{\CodeSymbol{robot}}}1
+           {robotMove}{{\CustomFunction{robotMove}}}1
+           {onRobot}{{\CustomFunction{onRobot}}}1
+           {deliver}{{\CustomFunction{deliver}}}1
+           {onShelf}{{\CustomFunction{onShelf}}}1
+           {order}{{\CustomFunction{order}}}1
+           {goal}{{\CustomFunction{goal}}}1
+           {pickingStation}{{\CustomFunction{pickingStation}}}1
+           {nodeAt}{{\CodeSymbol{nodeAt}}}1
+           {object}{{\CodeSymbol{object}}}1
+           {value}{{\CodeSymbol{value}}}1
+           {\#const}{{\CodeSymbol{\#const }}}1
+           {\#show}{{\CodeSymbol{\#show }}}1
+           {\#minimize}{{\CodeSymbol{\#minimize }}}1
+           {\#base}{{\CodeSymbol{\#base }}}1
+           {\#theory}{{\CodeSymbol{\#theory }}}1
+           {\#count}{{\CodeSymbol{\#count }}}1
+           {\#external}{{\CodeSymbol{\#external }}}1
+           {\#program}{{\CodeSymbol{\#program }}}1
+           {\#script}{{\CodeSymbol{\#script }}}1
+           {\#end}{{\CodeSymbol{\#end }}}1
+           {\#heuristic}{{\CodeSymbol{\#heuristic }}}1
+           {\#edge}{{\CodeSymbol{\#edge }}}1
+           {\#project}{{\CodeSymbol{\#project }}}1
+           {\#show}{{\CodeSymbol{\#show }}}1
+           {\#sum}{{\CodeSymbol{\#sum }}}1%
+}
+
+\newcommand\opstyle{\CodeSymbol} % <--- customise operator style here
+
+% Hook into listings
+\lst@AddToHook{OutputOther}{\ProcessOther@silmeth}
+
+% helper macro
+\newcommand\ProcessOther@silmeth
+{%
+  \ifnum\lst@mode=\lst@Pmode%     % If we're in `Processing' mode...
+    \def\lst@thestyle{\opstyle}%  % ... redefine the style locally
+  \fi%
+}
+
+\makeatother
+
+\newcommand{\Sim}{{\raise.17ex\hbox{\ensuremath{\scriptstyle\sim}}}}
+
+\begin{document}
+
+\title{SER 222: ADJ Problem 1}
+\author{Claudio Rodriguez Rodriguez}
+\maketitle
+
+% task_struct - from <linux/sched.h> <-- defined here
+
+% for_each_process - from <linux/sched/signal.h> <-- defined here (MACRO)
+
+% list_for_each - from #include <linux/list.h> <-- defined here (MACRO)
+% list_entry - from #include <linux/list.h>  <-- defined here (MACRO)
+% list_head - from #include <linux/list.h>
+
+% module_param - from #include <linux/moduleparam.h> <-- defined here (MACRO)
+% MODULE_PARM_DESC - from #include <linux/moduleparam.h> <-- defined here (MACRO)
+
+% printk - from <linux/kernel.h> 
+% defined in #include <linux/printk.h>
+% function
+
+% print_header
+% print_row
+% init_rodriguez_rodriguez_lkm_module
+% exit_rodriguez_rodriguez_lkm_module
+
+\section{Video Thumbnail Problem}
+
+\subsection{Problem}
+
+\textit{You have been contracted to develop an algorithm that automatically generates thumbnails for
+YouTube videos. Your employer wants to reduce the time it takes to get videos onto the platform by having
+software that processes a video file, and then produces a thumbnail that captures the content of the video
+and encourages people to click the video. They denitely don't want just a random screen shot, they want
+something with multiple elements that are composed together, like a graphic artist would produce.}
+
+\subsection{Analysis}
+
+\subsubsection{Thumbnails}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{Arlum Grim.png}
+\caption{The Frenzied Flame Lore | Three Fingers of Chaos | Elden Ring by Arlum Grim}
+\label{fig:thumbnail1}
+\end{figure}
+
+\subsubsection{\textbf{What aspects of the Thumbnail~\ref{fig:thumbnail1} encourages or discourages people from clicking it?}}
+
+The video showcases the Title of what it will be about clearly to encourage people to click. It also presents the parent title it is about in the Game's font ("Elden Ring"). 
+
+In addition, the thumbnail has fantastic elements which could encourage a person to click. 
+
+The background is hard to discern, which could be discouraging for users. In addition, if a person is scrolling down the list, the darkness of the thumbnail will prevent users from seeing it compared to other brighter and clearer thumbnails. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{KiteTales and Flex.png}
+\caption{Elden Ring Lore Storytime: Rykard, Lord of Blasphemy by KiteTales \& Flex}
+\label{fig:thumbnail2}
+\end{figure}
+
+\subsubsection{\textbf{What aspects of the Thumbnail~\ref{fig:thumbnail2} encourages or discourages people from clicking it?}}
+
+The video showcases the Title in big letters in a great and clear font, making it more encouraging for users. It also presents the parent title it is about in the Game's font ("Elden Ring"). 
+
+In addition, the thumbnail has fantastic elements which could encourage a person to click. 
+
+The background is easy to discern, which is also encouraging. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{VaatiVidya.png}
+\caption{Watch this before you Play Elden Ring! by VaatiVidya}
+\label{fig:thumbnail3}
+\end{figure}
+
+\subsubsection{\textbf{What aspects of the Thumbnail~\ref{fig:thumbnail3} encourages or discourages people from clicking it?}}
+
+The video does not present the Title of what it is about, which could be detrimental if it is something specific. 
+
+The background of the video is custom-made, and it blends art from the Game (Elden Ring) and another famous movie (Laputa: Castle in the Sky). This blend could help encourage people who have seen the film to go into the video without knowing it.
+
+The custom image specificity could be detrimental for the user who doesn't know of either Intelectual Property, but the fantastic elements encourage viewers.
+ 
+\subsubsection{Topic of Videos}
+
+The algorithm would process videos of Elden Ring and tag them accordingly. Elden Ring is a popular game that has different types of videos. The thumbnails shown relate to the Game's lore in the previous section. There are other types of videos identified: memes, trailers, walkthroughs, and guides for something specific. Each of these would need different requirements to identify and create a thumbnail, and it's essential to corroborate with the customer to classify the types of videos they make. 
+
+\subsubsection{Elements and theme of the thumbnail}
+
+We'll use Thumbnail~\ref{fig:thumbnail2} to address these elements:
+
+The thumbnail needs to have three sections
+
+\begin{itemize}
+  \item \textbf{Title}: Rykard, Lord of Blasphemy
+  \item \textbf{Series}: Lore Storytime
+  \item \textbf{Parent Group}: Elden Ring
+\end{itemize}
+
+The Series and Parent Group can be optional. 
+
+We can use the video file to retrieve it for the second element. We can detect faces, animals, and objects to present a wide selection to the user. 
+
+The generator can return each in a high-quality cropped image and order them by resolution. 
+
+It should discard an image below 320 pixels wide or below 150 pixels tall.
+
+If there are no objects detected we should detect the color palette and dominant colors and create a thumbnail based on those as part of the options.
+
+To address the theme of the video, we will use a "Type," which can be an emotional feeling. Use the type to filter the thumbnail or look for sentiment analysis in the selected objects. 
+
+\subsubsection{Input Assumptions}
+
+\begin{itemize}
+  \item The input is an MP4 Video File with at least 720p resolution. 
+  \item The Title should be part of the metadata in the File.
+  \item The Series, Parent Group and Type should be in the XML metadata of the MP4 file.
+\end{itemize}
+
+To process the objects, animals, and faces, we should use pre-trained models as part of an AI library like TensorFlow. Customization will be necessary due to the fantasy nature of the domain. To detect the color palette, the App should use a library.
+
+\subsubsection{Problem Assessment}
+
+The solution to this problem is feasible and realistic. If the AI part gets too complicated or too costly to maintain, the user can choose to use a Cloud Service to do that part, e.g., Amazon Rekognition.
+
+\subsubsection{How to start}
+
+Google the following:
+
+\begin{itemize}
+  \item How to extract MP4 metadata using Python.
+  \item How to apply Tensorflow pretained model on Image.
+  \item AWS Rekognition API. 
+\end{itemize}
+
+\subsubsection{Questions for customer}
+
+\begin{itemize}
+  \item What is the minimum resolution you want to use? (to make sure we are going to receive high quality videos)
+  \item How much time do you spend right now making 1 thumbnail?
+  \item How much money do you have to spend on 1 thumbnail? (e.g., an external image)
+  \item What is more important for you, lower financial cost or lower time cost?
+  \item Can I see your video publishing process?
+\end{itemize}
+
+\subsubsection{Feasibility of Solving the Problem}
+
+The problem is getting videos onto YouTube, and it is not clear that generating thumbnails is the root of the problem. Asking the customer to see the video publishing process would help find out if it is currently a blocker or not. Thumbnail generation may be the root of the problem, but it could also be related to video rendering, which would be simpler to solve but not necessarily lower cost. 
+
+\section{ADJ Part 1}
+
+\subsection{Problem}
+
+\textit{Consider designing a program where you need to store information about every student at ASU. You
+need to be able to quickly determine which undergraduate students have a GPA of at least 3.5 so that you
+can add them to the Dean's list. Would you use an array or linked list?}
+
+\subsection{Analysis}
+
+The main difference between an array and a linked list is that the array is indexed by a number, while the linked list is indexed by a pointer. The main difference between an array and a linked list is that the array is indexed by a number, while a pointer indexes the linked list. This difference means that the array search has a Big-Oh is O(1), while the linked list Big-Oh is O(n). Adding elements to a linked list is O(1), while adding elements to an array is O(n). 
+
+These statements show that it is essential to understand the size of the Student data structure to know the memory required. What information will the Dean need to know about the student? Information might include but not be limited to: Semester, GPA, Courses Taken, Extracurriculars, Fraternity, Graduation Date, Is the Student Graduated. To find out the specific information, we could ask the Dean what he is trying to solve with this program. A lot of this information might already be in another system, so it might not be necessary to return it. Should we return a link to another System, or should we Return the complete results using data from the other System? 
+
+To further understand the memory requirements, we need to know the number of students signed up and the lifetime of the data. If we can remove the Students from the System as soon as they graduate, it would reduce our memory requirements, but the Dean might be interested in keeping the students in the System for a different time. This point also affects the deletion rate, which is crucial for understanding which would be better over the other. 
+
+We need to understand the current footprint of students that the Dean will receive. For example, how many students are there with over a 3.5 GPA? What is the rotation of students? This point will help us get further clarity on the insertion rate of students. 
+
+Unrelated to these two points, it's essential to know where the data live. Will our application will retrieve from an external system? What is the lifecycle of the application? Is it run just in time, or does it run continuously? This point will clarify if we need to populate the data every time we run the program.
+
+\subsubsection{Assumptions}
+
+We assume the Application is run Just in Time and retrieves the students from an external data store with a GPA over 3.5 and puts them in a file. And the file is used for Difference purposes, allowing it only to return the newest students. Suppose the user deletes the files, the application processes all students. The data is visualized on the screen with multiple controls for the user to filter it using Student data. We assume we have semester and course filters on the UI. 
+
+Additionally, we assume the Application is closed as soon as we have retrieved the data. We check for new data on Application open, and we assume the external data store supports incremental queries to allow us to retrieve the latest changes. 
+
+We assume ASU has less than 500,000 students and that students don't have a rotation of more than 500,000 changes per minute.
+
+\subsubsection{Metrics}
+
+\begin{itemize}
+  \item M1: Memory efficiency of the algorithm. We use the amount of Students required to be loaded in the Data Structure as a measure of the amount of memory required. 
+  \item M2: Searching efficiency of the algorithm.
+\end{itemize}
+
+\subsection{Design}
+
+The team has opted to use an Array.
+
+\subsection{Justification}
+
+\subsubsection{M1}
+
+We can use an array since we are working with less than a million items. However, this is not the maximum number of elements because we will filter this data for students above a 3.5 GPA, further reducing the number of students in memory. Per our assumptions, we assume all students won't leave or enter the school in a minute, which gives enough time to shift an array of fewer than 500,000 elements (assuming all students drop and we got a new 500,000 batch). 
+
+\subsubsection{M2}
+
+Per definition, an Array searches items in O(1) time, which means filtering the data further according to other data in the Student data structure will be considerably faster. This Application does not remove the data from the array but uses for user filtering. The array itself is immutable and returns a new set of data to display after filtering.
+
+\end{document}
