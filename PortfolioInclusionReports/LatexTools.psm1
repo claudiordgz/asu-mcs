@@ -20,10 +20,10 @@ Function Build-LatexToPdf {
   process {
     Try {
       $fileName = [System.IO.Path]::GetFileNameWithoutExtension($File)
-      pdflatex $File
+      pdflatex $File -shell-escape
       bibtex "$fileName.aux"
-      pdflatex $File
-      pdflatex $File
+      pdflatex $File -shell-escape
+      pdflatex $File -shell-escape
     } Catch {
         Write-Error "$($_.Exception.Message) - Line Number: $($_.InvocationInfo.ScriptLineNumber)"
     }

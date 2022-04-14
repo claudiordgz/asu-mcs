@@ -1,0 +1,270 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor,colortbl}
+\usepackage{textcomp} 
+\usepackage{pythonhighlight}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\renewcommand{\familydefault}{\sfdefault}
+
+\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+\definecolor{Gray}{gray}{0.95}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcolumntype{a}{>{\columncolor{Gray}}l}
+\newcolumntype{b}{>{\columncolor{white}}c}
+
+\graphicspath{{./img/}}
+
+
+% Listings
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily
+}
+
+
+\definecolor{codegray}{gray}{0.95}
+\definecolor{commentgray}{gray}{0.35}
+
+\makeatletter
+
+\begin{document}
+
+\title{SER 222: ADJ Problem 2}
+\author{Claudio Rodriguez Rodriguez}
+\maketitle
+
+% task_struct - from <linux/sched.h> <-- defined here
+
+% for_each_process - from <linux/sched/signal.h> <-- defined here (MACRO)
+
+% list_for_each - from #include <linux/list.h> <-- defined here (MACRO)
+% list_entry - from #include <linux/list.h>  <-- defined here (MACRO)
+% list_head - from #include <linux/list.h>
+
+% module_param - from #include <linux/moduleparam.h> <-- defined here (MACRO)
+% MODULE_PARM_DESC - from #include <linux/moduleparam.h> <-- defined here (MACRO)
+
+% printk - from <linux/kernel.h> 
+% defined in #include <linux/printk.h>
+% function
+
+% print_header
+% print_row
+% init_rodriguez_rodriguez_lkm_module
+% exit_rodriguez_rodriguez_lkm_module
+
+\section{Peak of interest}
+
+\subsection{Problem}
+
+\textit{Design an algorithm to identify and list the ``peaks of interest'' during a video}
+
+\subsection{Analysis}
+
+A ``peak of interest'' is a point in a video that might be interesting to a viewer. If we identify it, we would be a step closer to an algorithm for automatically building thumbnails. We assume that we will use points with $max$ interest as possible thumbnails for a video and that we can use whatever underlying data structure to solve the problem of retrieving the max interest per video. 
+
+\subsubsection{Assumptions}
+
+We are given the intensity data as an array for a video already available as an input to the algorithm. 
+
+An array represents a video of length S (in seconds) with S indices. Each index stores the intensity of the content on the screen (typically indicating high levels of motion or color contrast).
+
+The "interest" value is $0~to~100$, with $100$ being the most interesting and $0$ being the least interesting. Examples:
+
+\begin{itemize}
+  \item \verb|Input data=[0,0,0,0,0]| would represent a video that is five seconds and contains nothing of interest. 
+  \begin{itemize} 
+    \item \verb|Output: []|
+ \end{itemize}
+
+ \item \verb|Input data=[0,50,100,50,0]| would represent a video that is five seconds and contains one point of interest in the middle. 
+  \begin{itemize} 
+    \item \verb|Output: [2]|
+ \end{itemize}
+
+ \item \verb|Input data=[75,0,0,0,75]| would represent a video that is five seconds and contains two points of interest on either side. 
+  \begin{itemize} 
+    \item \verb|Output: [0,4]|
+ \end{itemize}
+\end{itemize}
+
+
+\subsubsection{Metrics}
+
+From the problem, we observe two important metrics.
+
+\begin{itemize}
+  \item M1: The algorithm returns the expected indices as results where it finds the max interest.
+  \item M2: The efficiency of the algorithm. We use the number of comparisons in the algorithm as a cost metric to measure the computational time needed for a particular design.
+  \item M3: Memory efficiency of the algorithm. We use the amount of memory needed to run the algorithm as a cost metric in the form of variables required. 
+\end{itemize}
+
+\subsection{Design}
+
+The selected solution to solve the problem is shown on the Algorithm~\ref{designsolution}.
+
+\begin{lstlisting}[style=mypython,caption={Code for solution to retrieve max intensities},label=designsolution,captionpos=b]
+  def method_find_max(input_data):
+    if not input_data:
+      return []
+    current_max = 0
+    results = []
+    for i, value in enumerate(input_data):  
+      if value > current_max:
+        current_max = value
+        results = [i]
+      elif value == current_max and value != 0:
+        results.append(i)
+    return results
+\end{lstlisting}
+ 
+\subsection{Justification}
+
+\subsubsection{M1}
+
+\textbf{Case 1}: The list contains null, empty, or all 0s
+
+The algorithm will return an empty list of results, either by exiting early of the method or by checking all 0s in the list and returning an empty array.
+
+\textbf{Case 2}: The list contains one or multiple max values
+
+The algorithm will keep track of the max value in the list. If a new one appears, we replace the results with a new max index. If we find a duplicate max, we add the index to the current results.
+
+\subsubsection{M2}
+
+Because we need to check every item in the input array, the optimal solution will run in $O(n)$, and a log time solution is impossible. Therefore, the solution satisfies M2 as well.
+
+\subsubsection{M3}
+
+The memory used by this solution is $O(n)$ as part of the variable to hold the current max value and the results array. It is $O(n)$ because there can be the possibility that all elements in the collection have the max intensity, and in that case, our results will contain every index in the input data.
+
+\subsection{Alternative Design}
+
+There is an alternative proposed solution observed in the algorithm in Listing~\ref{designsolution2}. This solution fullfils M1. It uses sorting as its internal mechanism, and if we assume we are using an $O(N~log~N)$ sorting algorithm, we will observe that performance in this solution. Unfortunately, in a merge sort solution, the memory requirements will also be $O(n)$ for merge sort and the results. This argument makes the alternative solution not as optimal as the selected solution.
+
+\begin{lstlisting}[style=mypython,caption={Alternative solution to retrieve max intensities},label=designsolution2,captionpos=b]
+  def method_sort_and_get_max(input_data):
+    if not input_data:
+      return []
+    temp = [(i,v) for i, v in enumerate(input_data)]
+    temp = sorted(temp, key=lambda k: k[1], reverse=True)
+    current_max = temp[0][1]
+    results = []
+    i = 0
+    while True and current_max != 0:
+      if temp[i][1] == current_max:
+        results.append(temp[i][0])
+        i += 1
+      else:
+        break
+    return results
+\end{lstlisting}
+
+\section{Merge two priority queues}
+
+\subsection{Problem}
+
+\textit{Design an efficient algorithm to merge two priority queues.}
+
+\subsection{Analysis}
+
+We expect the algorithm to merge two priority queues in the following way: the algorithm will take two priority queues as input and return a single priority queue that contains the elements of both input queues. We will make the following assumptions to simplify the problem:
+
+\subsubsection{Assumptions}
+
+\begin{enumerate}
+  \item The type of priority queue (PQ) is the maximum PQ.
+  \item The specific implementation is Sedgewick's, obtained from Ruben Acu\~na's implementation in Github.\cite{ser222:racuna1}
+  \item The algorithm will assume that it operates over valid Priority Queues and produces a valid merged Priority Queue.
+  \item Sedgewick's implementation does not support duplicate keys.
+  \item We don't need to maintain PQ1 and PQ2.
+\end{enumerate}
+
+\subsubsection{Metrics}
+
+\begin{itemize}
+  \item M1: Correctness of Algorithm. The algorithm must be able to return a merged queue with all the elements from valid PQ 1 and valid PQ 2.
+  \item M2: The efficiency of the algorithm. We use the number of comparisons in the algorithm as a cost metric to measure the computational time needed for a particular design.
+\end{itemize}
+
+\subsection{Design}
+
+The solution to the problem is on Algorithm~\ref{designsolution3}. It assumes a proper implementation of Sedgewick's algorithm and uses $Integer$ to demonstrate the behavior. It is important to note that the Keys would not be Integer in a real-world scenario but an Object that implements the Comparable interface. 
+The proper implementation is a Priority Queue as defined according to  Definition~5 in \textbf{K} that contains \verb|insert| and \verb|delMax| which work in $O(log~n)$ time. This complexity is because the underlying implementation uses a Heap-ordered Array, which is in Definition~4 of \textbf{K}. 
+
+\begin{lstlisting}[language=Java,caption={Code for solution to retrieve max intensities},label=designsolution3,captionpos=b,frame=single]
+// Step 1: Create new queue
+MaxPQ<Integer> merged = new MaxPQ<Integer>(pq1.size() + pq2.size());
+while (!pq1.isEmpty() && !pq2.isEmpty()) {
+  Integer v1 = pq1.max();
+  Integer v2 = pq2.max();
+  // insert largest one first into new PQ
+  if (v1 > v2) {
+    merged.insert(v1);
+    pq1.delMax();
+  } else if (v2 > v1) {
+    merged.insert(v2);
+    pq2.delMax();
+  } else {
+    throw new UnsupportedOperationException("Queues have duplicate Priority");
+  }
+}
+
+// Step 2: Insert remaining elements from PQ1 and PQ2
+while (!pq1.isEmpty()) {
+  merged.insert(pq1.max());
+  pq1.delMax();
+}
+
+while (!pq2.isEmpty()) {
+  merged.insert(pq2.max());
+  pq2.delMax();
+}
+\end{lstlisting}
+
+\subsection{Justification}
+
+\subsubsection{M1}
+
+\textbf{Case 1}: PQ1 and PQ2 contain duplicate keys
+
+The algorithm will raise an UnsupportedOperationException to prevent the user from continuing.
+
+\textbf{Case 2}: PQ1 and PQ2 are two valid Priority Queues.
+
+The algorithm will insert the max value from each PQ into the merged PQ in $O(n)$ time, where N is the combined length of PQ1 and PQ2.
+
+\subsubsection{M2}
+
+The algorithm's efficiency is $O(n~log~n)$. The complexity is due to the initial loop where we process all elements from each Queue, and then we have a $log~n$ step inside the circle where we call $delMax$ and $insert$. 
+
+\subsection{Alternative Design}
+
+Unfortunately, there are not that many choices for alternative designs. Moreover, the algorithm's Complexity is $O(n~log~n)$ because of the loop to extract the elements from PQ1 and PQ2 even if we were to find a faster way to insert them into the new Queue by returning an Array of sorted elements. We could save the $insert$ call by replacing the sorted array, but the Big-Oh complexity would remain the same.
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,RodriguezRodriguezADJ2}
+
+\end{document}
