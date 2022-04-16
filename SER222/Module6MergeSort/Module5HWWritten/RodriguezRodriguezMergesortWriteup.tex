@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor,colortbl}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\renewcommand{\familydefault}{\sfdefault}
+
+\restylefloat{table}
+
+\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+\definecolor{Gray}{gray}{0.95}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcolumntype{a}{>{\columncolor{Gray}}l}
+\newcolumntype{b}{>{\columncolor{white}}c}
+
+\graphicspath{{./img/}}
+
+
+% Listings
+
+\lstset{numbers=none,numberblanklines=false,columns=fullflexible,basicstyle=\ttfamily,linewidth=\columnwidth,breaklines=true}
+
+\newcommand{\CodeSymbol}[1]{\bfseries\textcolor{violet}{#1}}   % Code associated to defining styles
+\newcommand{\InitColor}[1]{\bfseries\textcolor{orange}{#1}}   % Code associated to defining styles
+\newcommand{\RedColor}[1]{\bfseries\textcolor{red}{#1}}   % Code associated to defining styles
+\newcommand{\PairColor}[1]{\bfseries\textcolor{blue}{#1}}   % Code associated to defining styles
+\newcommand{\CustomFunction}[1]{\bfseries\textcolor{magenta}{#1}}   % Code associated to defining styles
+
+\definecolor{codegray}{gray}{0.95}
+\definecolor{commentgray}{gray}{0.35}
+
+\makeatletter
+
+\lstset{
+  tabsize = 4, %% set tab space width
+  showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+  numbers = left, %% display line numbers on the left
+  commentstyle = \color{green}, %% set comment color
+  keywordstyle = \color{blue}, %% set keyword color
+  stringstyle = \color{red}, %% set string color
+  rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+  basicstyle = \small \ttfamily , %% set listing font and size
+  breaklines = true, %% enable line breaking
+  numberstyle = \tiny,
+}
+
+
+\begin{document}
+
+\title{SER 222:\\Divide and Conquer and the Merge Concept}
+\author{Claudio Rodriguez Rodriguez}
+\maketitle
+
+\section{Shuffle Performance}
+
+The idea behind the algorithm is to break apart the array into log n slices and then randomly select from each slice. We use the same approach as the mergesort algorithm but replace the array slicing with a Queue. The idea to use a queue is because it makes it easy to "take" from the slices without worrying about resizing containers.
+
+The array is O(n log n) because we need to check every array element when merging elements (the n) over log n slices.  
+
+The algorithm differs from Mergesort in the "Compare" function. This difference means that we could create an Interface for a Compare function of type "Less than" and another of "Random pick" and pass it on to Mergesort, and we would save the duplicated code for breaking apart the input into log n parts. But opting for the exact slice handling means we would need to compromise by using a queue on regular compare instead of in-place comparisons.
+
+\ \\ 
+\ \\ 
+\ \\ 
+
+\begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+public static <T> ListQueue<T> _shuffle(ListQueue<T> list) {
+    if (list.size() <= 1) {
+        return list;
+    }
+
+    ListQueue<T> left = new ListQueue<T>(); (*@\label{slices}@*)
+    ListQueue<T> right = new ListQueue<T>();
+    while (!list.isEmpty()) {
+        left.enqueue(list.dequeue());
+        if (!list.isEmpty()) {
+            right.enqueue(list.dequeue());
+        }
+    }
+    left = _shuffle(left);
+    right = _shuffle(right);
+
+    return _shuffleMerge(left, right);
+}
+
+public static <T> ListQueue<T> _shuffleMerge(ListQueue<T> a, ListQueue<T> b) {
+    ListQueue<T> shuffled = new ListQueue<T>(); (*@\label{queue}@*)
+    Random random = new Random();
+    while (a.size() != 0 && b.size() != 0) {
+        if (random.nextBoolean()) {
+            shuffled.enqueue(a.dequeue()); (*@\label{easytotake}@*)
+        } else {
+            shuffled.enqueue(b.dequeue()); 
+        }
+    }
+
+    while(!a.isEmpty())
+    {
+        shuffled.enqueue(a.dequeue());
+    }
+    while(!b.isEmpty())
+    {
+        shuffled.enqueue(b.dequeue());
+    }
+    return shuffled;
+}
+\end{lstlisting}
+
+\end{document}

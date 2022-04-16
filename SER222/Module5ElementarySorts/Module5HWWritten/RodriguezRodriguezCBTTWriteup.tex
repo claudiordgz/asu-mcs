@@ -1,0 +1,243 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor,colortbl}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\renewcommand{\familydefault}{\sfdefault}
+
+\restylefloat{table}
+
+\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+\definecolor{Gray}{gray}{0.95}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcolumntype{a}{>{\columncolor{Gray}}l}
+\newcolumntype{b}{>{\columncolor{white}}c}
+
+\graphicspath{{./img/}}
+
+
+% Listings
+
+\lstset{numbers=none,numberblanklines=false,columns=fullflexible,basicstyle=\ttfamily,linewidth=\columnwidth,breaklines=true}
+
+\newcommand{\CodeSymbol}[1]{\bfseries\textcolor{violet}{#1}}   % Code associated to defining styles
+\newcommand{\InitColor}[1]{\bfseries\textcolor{orange}{#1}}   % Code associated to defining styles
+\newcommand{\RedColor}[1]{\bfseries\textcolor{red}{#1}}   % Code associated to defining styles
+\newcommand{\PairColor}[1]{\bfseries\textcolor{blue}{#1}}   % Code associated to defining styles
+\newcommand{\CustomFunction}[1]{\bfseries\textcolor{magenta}{#1}}   % Code associated to defining styles
+
+\definecolor{codegray}{gray}{0.95}
+\definecolor{commentgray}{gray}{0.35}
+
+\makeatletter
+
+\lstdefinelanguage{clingo}{%
+  basicstyle=\footnotesize\ttfamily,%
+  backgroundcolor=\color{codegray},%
+  showstringspaces=false,%
+  alsoletter=0123456789,%
+  columns=fullflexible,%
+  resetmargins=true,%
+  breaklines=true,%
+  keywords=[3]{&,&dom,&sum,&diff,&show},%
+  morecomment=[l]{\#\ },%
+  morecomment=[l]{\%\ },%
+  morestring=[b]",%
+  stringstyle={\itshape},%
+  commentstyle={\color{commentgray}},%
+  literate={init}{{\InitColor{init}}}1
+           {not}{{\RedColor{not }}}1
+           {pair}{{\PairColor{pair}}}1
+           {onNode}{{\CustomFunction{onNode}}}1
+           {occurs}{{\CustomFunction{occurs}}}1
+           {action}{{\CustomFunction{action}}}1
+           {move}{{\CodeSymbol{move}}}1
+           {robot}{{\CodeSymbol{robot}}}1
+           {robotMove}{{\CustomFunction{robotMove}}}1
+           {onRobot}{{\CustomFunction{onRobot}}}1
+           {deliver}{{\CustomFunction{deliver}}}1
+           {onShelf}{{\CustomFunction{onShelf}}}1
+           {order}{{\CustomFunction{order}}}1
+           {goal}{{\CustomFunction{goal}}}1
+           {pickingStation}{{\CustomFunction{pickingStation}}}1
+           {nodeAt}{{\CodeSymbol{nodeAt}}}1
+           {object}{{\CodeSymbol{object}}}1
+           {value}{{\CodeSymbol{value}}}1
+           {\#const}{{\CodeSymbol{\#const }}}1
+           {\#show}{{\CodeSymbol{\#show }}}1
+           {\#minimize}{{\CodeSymbol{\#minimize }}}1
+           {\#base}{{\CodeSymbol{\#base }}}1
+           {\#theory}{{\CodeSymbol{\#theory }}}1
+           {\#count}{{\CodeSymbol{\#count }}}1
+           {\#external}{{\CodeSymbol{\#external }}}1
+           {\#program}{{\CodeSymbol{\#program }}}1
+           {\#script}{{\CodeSymbol{\#script }}}1
+           {\#end}{{\CodeSymbol{\#end }}}1
+           {\#heuristic}{{\CodeSymbol{\#heuristic }}}1
+           {\#edge}{{\CodeSymbol{\#edge }}}1
+           {\#project}{{\CodeSymbol{\#project }}}1
+           {\#show}{{\CodeSymbol{\#show }}}1
+           {\#sum}{{\CodeSymbol{\#sum }}}1%
+}
+
+\newcommand\opstyle{\CodeSymbol} % <--- customise operator style here
+
+% Hook into listings
+\lst@AddToHook{OutputOther}{\ProcessOther@silmeth}
+
+% helper macro
+\newcommand\ProcessOther@silmeth
+{%
+  \ifnum\lst@mode=\lst@Pmode%     % If we're in $Processing' mode...
+    \def\lst@thestyle{\opstyle}%  % ... redefine the style locally
+  \fi%
+}
+
+\makeatother
+
+\newcommand{\Sim}{{\raise.17ex\hbox{\ensuremath{\scriptstyle\sim}}}}
+
+\begin{document}
+
+\title{SER 222: Benchmarking Sorting Algorithms}
+\author{Claudio Rodriguez Rodriguez}
+\maketitle
+
+% task_struct - from <linux/sched.h> <-- defined here
+
+% for_each_process - from <linux/sched/signal.h> <-- defined here (MACRO)
+
+% list_for_each - from #include <linux/list.h> <-- defined here (MACRO)
+% list_entry - from #include <linux/list.h>  <-- defined here (MACRO)
+% list_head - from #include <linux/list.h>
+
+% module_param - from #include <linux/moduleparam.h> <-- defined here (MACRO)
+% MODULE_PARM_DESC - from #include <linux/moduleparam.h> <-- defined here (MACRO)
+
+% printk - from <linux/kernel.h> 
+% defined in #include <linux/printk.h>
+% function
+
+% print_header
+% print_row
+% init_rodriguez_rodriguez_lkm_module
+% exit_rodriguez_rodriguez_lkm_module
+
+\section{Hypothesis}
+
+\subsection{Insertion Sort}
+
+\subsubsection{generateTestDataBinary}
+
+\textbf{$O(n)$}: The way insertion sort works, it will only perform extra loops if the data is not in order. However, if the data is already in order, insertion sort saves on those additional loops, causing it to look like an $O(n)$ algorithm. 
+
+\subsubsection{generateTestDataHalves}
+
+\textbf{$O(n)$}: In this case, the array is almost in order with duplicate data. We expect to observe $O(n)$, but if the algorithm underneath cannot handle duplicates, we might see different behavior. 
+
+\subsubsection{generateTestDataHalfRandom}
+
+\textbf{$O(n^2)$}: In the case of an array where only half the array is in order, We expect the behavior to align with the current Worst Case $O(n^2)$. The reason is that this would mean that the performance expected would be $O(1/2*n^2)$, which is still $O(n^2)$.
+
+\subsection{Shell Sort}
+
+\subsubsection{generateTestDataBinary}
+
+\textbf{$O(nlogn)$}: Shell sort will break apart the array into smaller pieces, and then sort those smaller pieces. We expect it to compare those smaller pieces and not perform any swap. Afterwards those swapped elements will be assembled back into the another array.
+
+\subsubsection{generateTestDataHalves}
+
+\textbf{$O(nlogn)$}: Same as before, we would expect to see $O(nlogn)$ behavior if the array is close to being in order.
+
+\subsubsection{generateTestDataHalfRandom}
+
+\textbf{$O(n^{3/2})$}: We expect the behavior to align with the current Worst Case.
+
+% \begin{figure}[h!]
+% \centering
+% \includegraphics[width=0.5\textwidth]{Arlum Grim.png}
+% \caption{The Frenzied Flame Lore | Three Fingers of Chaos | Elden Ring by Arlum Grim}
+% \label{fig:thumbnail1}
+% \end{figure}
+
+% \begin{figure}[h!]
+% \centering
+% \includegraphics[width=0.5\textwidth]{KiteTales and Flex.png}
+% \caption{Elden Ring Lore Storytime: Rykard, Lord of Blasphemy by KiteTales \& Flex}
+% \label{fig:thumbnail2}
+% \end{figure}
+
+\section{Benchmark Result}
+
+We observe the results in ~\ref{tab:resultstable}. We can observe some negative values in the table, which is where the double size dataset finishes earlier than the smaller size dataset. We increased the test sample size to allow better resolution when doubling the test size to handle this.
+
+\begin{table}[!ht]
+\begin{tabular}{lll}
+\rowcolor[HTML]{C9C9C9} 
+\multicolumn{3}{l}{\cellcolor[HTML]{C9C9C9}Initial Size: 4096} \\
+\rowcolor[HTML]{EFEFEF} 
+                      & Insertion Sort       & Shellsort       \\
+Binary                & -0.163               & 0.826           \\
+\rowcolor[HTML]{EFEFEF} 
+Halves                & 0.468	               & 0.952           \\
+Random Integer        & 0.034                & 1.346           \\
+
+\multicolumn{3}{l}{\cellcolor[HTML]{C9C9C9}Initial Size: 8192} \\
+\rowcolor[HTML]{EFEFEF} 
+                      & Insertion Sort       & Shellsort       \\
+Binary                & 0.614                & -0.731          \\
+\rowcolor[HTML]{EFEFEF} 
+Halves                & 0.367                & 1.131           \\
+Random Integer        & 1.127                & 1.073           \\
+\multicolumn{3}{l}{\cellcolor[HTML]{C9C9C9}Initial Size: 20480} \\
+\rowcolor[HTML]{EFEFEF} 
+                      & Insertion Sort       & Shellsort       \\
+Binary                & 0.391                & -0.383          \\
+\rowcolor[HTML]{EFEFEF} 
+Halves                & -0.451               & -0.934          \\
+Random Integer        & 1.888                & 0.595           \\
+\multicolumn{3}{l}{\cellcolor[HTML]{C9C9C9}Initial Size: 40960} \\
+\rowcolor[HTML]{EFEFEF} 
+                      & Insertion Sort       & Shellsort       \\
+Binary                & -0.600               & -0.734          \\
+\rowcolor[HTML]{EFEFEF} 
+Halves                & 0.743                & 0.889           \\
+Random Integer        & 2.208                & 0.740           
+\end{tabular}
+\caption{Results Table}
+\label{tab:resultstable}
+\end{table}
+
+\section{Evaluation/Validation}
+
+Our hypothesis for insertion sort is very close to reality as we increase the test data size. 
+
+In contrast, our shell sort hypothesis seems to be incorrect. For a test size of 40960 ran six times, the average times are -0.644 Binary, 0.955 Halves, and 0.724 RanInt.  
+
+These results are not consistent with our prediction of $O(nlogn)$ or $O(n^{3/2})$. The results themselves are fascinating because they are very consistent for all algorithms. The smaller the test size, the closer Shell Sort is to our hypothesis.  A new hypothesis is born from this study: shell sort benefits from large datasets.
+
+\section{Scenario}
+
+\begin{quote}
+  Suppose that you are on a team that was given a legacy codebase that uses shellsort sort to
+  process an array with half zeros, half random data. The legacy documentation indicates that shellsort
+  is the best choice but you are asked to investigate and confirm. Based on your findings above, would
+  you recommend, for better performance, that the team to stay with shellsort or switch to insertion sort?  (Acu\~{n}a, 8/8/2021)
+\end{quote}
+
+It would largely depend on the input data. In our observation for small test sets, Insertion sort would behave better than Shell Sort. When the number of elements increased over 40k, we would start seeing results that would support Shell sort. 
+
+My initial reaction would be, "if it's not broken, don't fix it," and I would recommend that the team not change code that is already working.
+
+\end{document}
