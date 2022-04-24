@@ -1,0 +1,10 @@
+a, b;
+  main {
+    public:
+      b;
+    private:
+      a;
+    nested {
+      a = b; // ::a = main.b
+    } 
+}

@@ -2,7 +2,7 @@
 
 let count=0;
 for f in $(ls ./tests/*.txt); do
-	# echo "<$f > ./tests/`basename $f .txt`.output;"
+	#echo "<$f > ./tests/`basename $f .txt`.output;"
 	./a.out <$f > ./tests/`basename $f .txt`.output; 
 done;
 
