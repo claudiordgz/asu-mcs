@@ -1,5 +1,4 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -32,7 +31,7 @@ public class RodriguezRodriguezMain {
     };
 
     static void processInputStream(InputStream in, FileNodeAndEdge handler) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 
         String line;
         while ((line = bufferedReader.readLine()) != null) {
@@ -43,6 +42,26 @@ public class RodriguezRodriguezMain {
         }
 
         bufferedReader.close();
+    }
+
+    static void generateGraph() {
+        // to generate graph use the following
+        // dot -Tsvg -Nfontcolor=red -Nshape=rect .\graph.gv
+        try (PrintWriter pw = new PrintWriter("graph.gv", "UTF-8")){
+            pw.print("digraph g {\n");
+            for(int i : directedGraph.vertices()) {
+                for(int w : directedGraph.getAdj(i)) {
+                    int vOrigin = kanjiData.get(i);
+                    int vDest = kanjiData.get(w);
+                    String chOr = String.valueOf(Character.toChars(vOrigin));
+                    String chDest = String.valueOf(Character.toChars(vDest));
+                    pw.print(chOr + "->" + chDest + ";");
+                }
+            }
+            pw.println("}");
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -59,6 +78,8 @@ public class RodriguezRodriguezMain {
             assert componentsIS != null;
             processInputStream(kanjiIS, kanjiElements);
             processInputStream(componentsIS, componentElements);
+
+            generateGraph();
 
             for (Integer i : directedGraph.vertices()) {
                 System.out.print(String.valueOf(Character.toChars(kanjiData.get(i))));

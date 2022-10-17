@@ -1,4 +1,9 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.LinkedList;
+
 
 public class BetterDiGraph implements EditableDiGraph {
 
@@ -91,11 +96,12 @@ public class BetterDiGraph implements EditableDiGraph {
             }
         }
         adj.remove(v);
+        V--;
     }
 
     @Override
     public Iterable<Integer> vertices() {
-        return new ArrayList<>(adj.keySet());
+        return new LinkedList<>(adj.keySet());
     }
 
     @Override
