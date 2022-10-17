@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "Week3\\CaesarCipher"
+		},
+		{
+			"path": "Week3\\EsperCipher"
+		},
+		{
+			"path": "Week4\\TCPSpoofing"
+		},
+		{
+			"path": "Week4\\UDPSpoofing"
+		},
+		{
+			"path": "Week5\\PwnThemAll"
+		},
+		{
+			"path": "Week6\\FindingCrashes"
+		},
+		{
+			"path": "Week6\\FuzzThemAll"
+		}
+	]
+}
