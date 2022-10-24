@@ -56,5 +56,19 @@ if encrypting:
         output.write(bytes(ciphertext))
         output.close()
 else:
-    print("Decryption is not implemented!")
-    exit(1)
+    plaintext = []
+    key = "rORTrfA"
+    keyrotate = 2
+    keyxor = []
+    for k in key:
+        keyxor.append(ord(k))
+
+    for i in range(0, len(ciphertext)):
+        p = ciphertext[i] ^ keyxor[i % len(keyxor)]
+        plaintext.append(chr(lrot(p, 8 - keyrotate)))
+    
+    print(plaintext)
+
+    with open("plaintext.txt", "w", newline='\n') as output:
+        output.write(''.join(plaintext))
+        output.close()
