@@ -1,0 +1,57 @@
+Pwn Them All Report
+https://www.md5hashgenerator.com/
+
+Claudio Bernardo Rodriguez Rodriguez
+ASU ID - cbrodri1 
+ASU ID # - 1220247197
+Hacker handle - claudiordgz
+
+Level 01
+MD5: cd3d9cadf1ef30f7dc5802e823116310
+Flag: Your First Blood
+
+For level 1, I first opened the HTML code of form.html. I read the comment and found that the username and password are verified using the javascript file cgi-bin/verify.js. I read the JavaScript code and found the username, password, and Secret in that file. 
+
+Level 02
+MD5: 41e33f8c6719f97e1ac00d745e6a25c5
+Flag: allyourbasebelongtous
+
+For level 2, I first opened the HTML page using the md5 hash of the first flag. After getting to the page, I read the source code and understood I could use the filter URL parameter. I opened the Dev Tools and the console tab and did the following:
+
+(async function() {
+  const r = await fetch('http://pwnthemall.cse543.rev.fish:8082/cgi-bin/users.php?filter=ls');
+  console.log(await r.text());
+})()
+
+I kept changing the filter until I got it to print ls using the following:
+
+(async function() {
+  const r = await fetch('http://pwnthemall.cse543.rev.fish:8082/cgi-bin/users.php?filter=;ls');
+  console.log(await r.text());
+})()
+
+After that, I found the file secretuser.txt and did `cat secretuser.txt`.
+
+Level 03
+MD5: ba49a4555854299152eb44d2619bc5bf
+Flag: Hack the planet!
+
+For level 3, first, I opened the Devtools and the Network tab. After that, I filled out the form and sent a request. In the network tab, I observed that the request went to cgi-bin/petition.py?first=&last=&email=&comment=&id=. 
+I played around with those four parameters until I found that if I left the ID blank, I got the id user back. Most combinations would say, "Maybe you should provide your ID and see what you submitted." So I obediently removed every parameter but the ID. Using only the ID returned the flag. 
+
+Level 04
+MD5: 9b87ecb29600dd01b9e32d2cd268a9a4
+Flag: thisissuchasimplesecret
+
+I immediately understood how to do directory traversal by reading files named test, or test;ls. However, I needed help finding the correct file. So, after many tries doing command line injection with every single parameter in the form data, I reread the problem. It implied running the command line vulnerability in Level 2. So, I went to Level 2 and couldn't access the files on /tmp/level04 but there was a suspicious file named sess_91c7e1e10744d69fd8fe35ecfc. So, I returned to Level 4 and popped that name in, and to my surprise, it had a lot of trash. I didn't mind that much, and I tried to do an MD5 to access Level 05 without luck. I read the trash content, and it was suspicious, as if a Student had written it in error. 
+I tried reading /tmp/sess_91c7e1e10744d69fd8fe35ecfc, and it returned nothing. So I started doing ../sess_91c7e1e10744d69fd8fe35ecfc intending to go up until it worked. But, to my surprise, it worked on the first try. 
+I used JavaScript's fetch and the DevTools console for everything.
+
+Example:
+(async function() { 
+   const r = await fetch('http://pwnthemall.cse543.rev.fish:8084/cgi-bin/it.php', { 
+  body: new URLSearchParams("filename=../sess_91c7e1e10744d69fd8fe35ecfc&readmode=yes&nonce=2083456478"), method: "post" }); 
+  console.log(await r.text()); 
+})()
+
+
