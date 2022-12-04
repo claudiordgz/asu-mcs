@@ -68,10 +68,12 @@ fn main_fuzzer(prng: &mut ChaCha8Rng, cli_args: Cli) -> Vec<u8> {
             // avoid invalid utf-8 characters
             let random = prng.gen_range(1..100);
             if random <= 13 {
-                if *c < 126 {
-                    *c += 1;
+                if *c % 200 == 0 {
+                    *c = prng.gen_range(0..126);
+                } else if *c % 3 == 1 {
+                    *c = prng.gen_range(174..255);
                 } else {
-                    *c = 48;
+                    *c = prng.gen_range(65..126);
                 }
             }
         }
