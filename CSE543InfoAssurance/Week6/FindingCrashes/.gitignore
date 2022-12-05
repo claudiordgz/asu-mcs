@@ -1,1 +1,6 @@
 submission.zip
+*/bin/
+*/*/bin/
+*/build/
+*/*/build/
+**/dist
