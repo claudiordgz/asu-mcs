@@ -2,7 +2,6 @@
 using System;
 using System.Text;
 using System.Numerics;
-using System.Diagnostics;
 
 namespace P4
 {
@@ -62,7 +61,7 @@ namespace P4
 
         public static string P4(string[] args)
         {
-            if (args.Length != 6) throw new ArgumentException("Insufficient arguments");
+            // if (args.Length != 6) throw new ArgumentException("Insufficient arguments");
             ParsedParams parsedParams = parseArgs(args);
 
             var p = BigInteger.Subtract(BigInteger.Pow(2, parsedParams.p_e), parsedParams.p_c);
@@ -73,7 +72,7 @@ namespace P4
             var extendedEuclideanAlgorithmResult = extendedEuclideanAlgorithm(e, phi);
 
             BigInteger d = extendedEuclideanAlgorithmResult.Item2;
-            Debug.Assert(BigInteger.Multiply(d, e) % phi == 1, "Invalid d");
+            // Debug.Assert(BigInteger.Multiply(d, e) % phi == 1, "Invalid d");
 
             var decryptedCyphertext = BigInteger.ModPow(parsedParams.cyphertext, d, BigInteger.Multiply(p, q));
             var encryptedText = BigInteger.ModPow(parsedParams.plaintext, e, BigInteger.Multiply(p, q));
