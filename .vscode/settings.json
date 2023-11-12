@@ -23,5 +23,6 @@
     },
     "files.associations": {
         "*.sql": "postgres"
-    }
+    },
+    "sarif-viewer.connectToGithubCodeScanning": "off"
 }
