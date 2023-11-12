@@ -567,3 +567,6 @@ spark-warehouse/
 .metals
 
 linux-5.*
+
+
+CSE598/**/*.zip
