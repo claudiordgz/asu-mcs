@@ -1,0 +1,52 @@
+﻿@page
+@model BMI_Calculator_Web.Pages.BmiPageModel
+<form asp-action="CalculateBmi" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="Height">Height (in inches):</label>
+        </div>
+        <div class="col-md-3">
+            <input type="number" id="Height" name="Height" asp-for="Input.Height" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <label for="Weight">Weight (in pounds):</label>
+        </div>
+        <div class="col-md-3">
+            <input type="number" id="Weight" name="Weight" asp-for="Input.Weight" class="form-control" required>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <button type="submit" name="submitType" value="bmiSoap" class="btn btn-primary">MY BMI (SOAP)</button>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" name="submitType" value="bmiRest" class="btn btn-primary">MY BMI (REST)</button>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" name="submitType" value="healthSoap" class="btn btn-success">MY HEALTH (SOAP)</button>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" name="submitType" value="healthRest" class="btn btn-success">MY HEALTH (REST)</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Result != null)
+{
+    <div>
+        <h3>BMI: @Model.Result.Bmi</h3>
+        @if (!string.IsNullOrEmpty(Model.Result.RiskColor))
+        {
+    <h3 style="color: @Model.Result.RiskColor;">@Model.Result.Risk - @Model.Result.RiskColor</h3>
+        }
+        <ul>
+            @if (Model.Result.More != null && Model.Result.More.Any())
+            {
+                @foreach (var info in Model.Result.More)
+                {
+                    <li>@info</li>
+                }
+            }
+        </ul>
+    </div>
+}
