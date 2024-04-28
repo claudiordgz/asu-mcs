@@ -26,18 +26,18 @@ public class EvaluationController {
     }
 
     public List<Evaluation> getLastNEvaluations(UserAccount user, int n) {
-        List<Evaluation> userEvals = allEvaluations.get(user);
-        if (userEvals == null) {
-            return new ArrayList<>();
-        }
+    List<Evaluation> userEvals = allEvaluations.get(user);
+    if (userEvals == null) {
+        return new ArrayList<>();
+    }
 
-        userEvals.sort(Comparator.comparing(Evaluation::getTimestamp));
+    userEvals.sort(Comparator.comparing(Evaluation::getTimestamp));
 
-        if (userEvals.size() <= n) {
-            return userEvals;
-        }
+    if (userEvals.size() <= n) {
+        return userEvals;
+    }
 
-        return userEvals.subList(userEvals.size() - n, userEvals.size());
+    return userEvals.subList(userEvals.size() - n, userEvals.size());
     }
 
     public List<SymptomSummary> getSymptomSummaryForUser(UserAccount user)

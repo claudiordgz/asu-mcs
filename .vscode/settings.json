@@ -24,5 +24,7 @@
     "files.associations": {
         "*.sql": "postgres"
     },
-    "sarif-viewer.connectToGithubCodeScanning": "off"
+    "sarif-viewer.connectToGithubCodeScanning": "off",
+    "cmake.configureOnOpen": false,
+    "dotnet.defaultSolution": "disable"
 }
