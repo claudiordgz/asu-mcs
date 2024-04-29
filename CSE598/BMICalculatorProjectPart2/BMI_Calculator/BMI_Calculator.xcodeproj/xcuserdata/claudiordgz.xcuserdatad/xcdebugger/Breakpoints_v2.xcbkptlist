@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "A3DCC4C6-1809-41FA-890F-2EF52BFB2372"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "67F10440-042E-4459-8378-66E3F907B261"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BMI_Calculator/SoapResponseParser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "parser(_:didStartElement:namespaceURI:qualifiedName:attributes:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "67F10440-042E-4459-8378-66E3F907B261 - a1d072200611c6c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, didStartElement: Swift.String, namespaceURI: Swift.Optional&lt;Swift.String&gt;, qualifiedName: Swift.Optional&lt;Swift.String&gt;, attributes: Swift.Dictionary&lt;Swift.String, Swift.String&gt;) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "1044">
+               </Location>
+               <Location
+                  uuid = "67F10440-042E-4459-8378-66E3F907B261 - a1d072200611c6c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, didStartElement: Swift.String, namespaceURI: Swift.Optional&lt;Swift.String&gt;, qualifiedName: Swift.Optional&lt;Swift.String&gt;, attributes: Swift.Dictionary&lt;Swift.String, Swift.String&gt;) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "428">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A59D0D87-F0BC-479D-8B19-B447F1DB4326"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BMI_Calculator/SoapResponseParser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "parser(_:foundCharacters:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A59D0D87-F0BC-479D-8B19-B447F1DB4326 - 275515039ded1dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, foundCharacters: Swift.String) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "46"
+                  endingLineNumber = "46"
+                  offsetFromSymbolStart = "300">
+               </Location>
+               <Location
+                  uuid = "A59D0D87-F0BC-479D-8B19-B447F1DB4326 - 275515039ded1dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, foundCharacters: Swift.String) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "46"
+                  endingLineNumber = "46"
+                  offsetFromSymbolStart = "192">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "37EC0CCD-7F14-40C6-8450-12FA37AC4C53"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BMI_Calculator/SoapResponseParser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "parser(_:didEndElement:namespaceURI:qualifiedName:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "37EC0CCD-7F14-40C6-8450-12FA37AC4C53 - 7fad96f3fc5f939e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, didEndElement: Swift.String, namespaceURI: Swift.Optional&lt;Swift.String&gt;, qualifiedName: Swift.Optional&lt;Swift.String&gt;) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "1100">
+               </Location>
+               <Location
+                  uuid = "37EC0CCD-7F14-40C6-8450-12FA37AC4C53 - 7fad96f3fc5f939e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, didEndElement: Swift.String, namespaceURI: Swift.Optional&lt;Swift.String&gt;, qualifiedName: Swift.Optional&lt;Swift.String&gt;) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "128">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B1D61F6F-19E5-497B-839D-0AAC8B60FD49"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BMI_Calculator/SoapResponseParser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "parser(_:didStartElement:namespaceURI:qualifiedName:attributes:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B1D61F6F-19E5-497B-839D-0AAC8B60FD49 - a1d072200611c6b8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, didStartElement: Swift.String, namespaceURI: Swift.Optional&lt;Swift.String&gt;, qualifiedName: Swift.Optional&lt;Swift.String&gt;, attributes: Swift.Dictionary&lt;Swift.String, Swift.String&gt;) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "156">
+               </Location>
+               <Location
+                  uuid = "B1D61F6F-19E5-497B-839D-0AAC8B60FD49 - a1d072200611c6b8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BMI_Calculator.SoapResponseParser.parser(_: __C.NSXMLParser, didStartElement: Swift.String, namespaceURI: Swift.Optional&lt;Swift.String&gt;, qualifiedName: Swift.Optional&lt;Swift.String&gt;, attributes: Swift.Dictionary&lt;Swift.String, Swift.String&gt;) -&gt; ()"
+                  moduleName = "BMI_Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/claudiordgz/Code/asu-mcs/CSE598/BMICalculatorProjectPart2/BMI_Calculator/BMI_Calculator/SoapResponseParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "164">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A2D44A42-0E9B-4513-A9FD-AB95E96BCB81"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BMI_Calculator/BMICalculatorView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
