@@ -1,0 +1,4 @@
+coverage --experimental_generate_llvm_lcov
+coverage --test_env=COVERAGE_GCOV_PATH=/Library/Developer/CommandLineTools/usr/bin/llvm-profdata
+coverage --test_env=LLVM_COV=/Library/Developer/CommandLineTools/usr/bin/llvm-cov
+coverage --copt=-ffile-compilation-dir=.
