@@ -1,0 +1,146 @@
+#!/bin/bash
+
+#Example of test case
+#java -jar CSE565P1.jar Peter 24 Returning Silver Spring Electronics 5
+#ADD TEST CASES BELOW
+: '
+Equivalence Partitioning
+
+User Name               1   2   3   4   5   6   7   8   9
+5-10 (V)                X
+No numbers (V)          X
+No hyphen (V)           X
+No underscore (V)       X
+<5 (I)                      X
+>10 (I)                         X
+Numbers (I)                                     X
+Hyphen (I)                                          X
+Underscore (I)                                          X
+
+Age
+>=18 (V)                X
+<18 (I)                             X
+
+Rating o fProduct
+1-10 (V)                X   
+>10 (I)                                 X
+<1 (I)                                      X
+'
+EP_TC1="Claudio 18 1"             # User Name 5-10 characters, valid age, valid rating
+EP_TC2="M1234 18 1"               # User Name with numbers, valid age, valid rating
+EP_TC3="Clau 18 1"                # User Name < 5 characters, valid age, valid rating
+EP_TC4="ClaudioIsTesting 18 1"    # User Name > 10 characters, valid age, valid rating
+EP_TC5="Claudio- 18 1"            # User Name with hyphen, valid age, valid rating
+EP_TC6="Claudio_ 18 1"            # User Name with underscore, valid age, valid rating
+EP_TC7="Claudio 17 1"             # User Name valid, age < 18, valid rating
+EP_TC8="Claudio 18 11"            # User Name valid, valid age, rating > 10
+EP_TC9="Claudio 18 0"             # User Name valid, valid age, rating < 1
+
+equivalence_partitioning_test_cases=(
+  "$EP_TC1"
+  "$EP_TC2"
+  "$EP_TC3"
+  "$EP_TC4"
+  "$EP_TC5"
+  "$EP_TC6"
+  "$EP_TC7"
+  "$EP_TC8"
+  "$EP_TC9"
+)
+
+# Function to run equivalence partitioning test cases
+run_tests() {
+  local -n test_cases=$1
+  for i in "${!test_cases[@]}"; do
+    local userName userAge userRating cmd
+    IFS=' ' read -r userName userAge userRating <<< "${test_cases[$i]}"
+    
+    local base="java -jar ./CSE565P1.jar"
+    local args="$userName $userAge Returning Bronze Winter Electronics $userRating"
+    local cmd="$base $args"
+    local result=$(eval "$cmd")
+    echo $result
+  
+    
+  done
+}
+
+: '
+Boundary Value
+
+User Name
+4,5,6 Lower
+9,10,11 Upper
+
+Age
+17, 18, 19
+
+Rating
+0,1,2
+
+9,10,11
+'
+BV_TC1="Claudio 19 1" 
+BV_TC2="Claudio 18 2" 
+BV_TC3="Claudio 18 9" 
+BV_TC4="Claudio 18 10"
+
+boundary_values_test_cases=(
+  "$BV_TC1"
+  "$BV_TC2"
+  "$BV_TC3"
+  "$BV_TC4"
+)
+
+
+cause_effect_cases=(
+  "New Bronze Summer Electronics:No discount"
+  "New Silver Summer Electronics:No discount"
+  "New Gold Summer Electronics:No discount"
+  "New Bronze Summer Unknown:No discount"
+  "New Silver Summer Unknown:No discount"
+  "New Gold Summer Unknown:No discount"
+  "Returning Bronze Summer Unknown:No discount"
+  "Returning Silver Summer Unknown:No discount"
+  "Returning Gold Summer Unknown:No discount"
+  "Returning Bronze Summer Electronics:No discount"
+  "Returning Silver Summer Electronics:No discount"
+  "Returning Gold Summer Electronics:15%"
+  "Returning Bronze Spring Unknown:No discount"
+  "Returning Silver Spring Unknown:No discount"
+  "Returning Gold Spring Unknown:No discount"
+  "Returning Bronze Spring Electronics:10%"
+  "Returning Silver Spring Electronics:No discount"
+  "Returning Gold Spring Electronics:No discount"
+  "Returning Bronze Winter Unknown:No discount"
+  "Returning Silver Winter Unknown:No discount"
+  "Returning Gold Winter Unknown:No discount"
+  "Returning Bronze Winter Electronics:No discount"
+  "Returning Silver Winter Electronics:No discount"
+  "Returning Gold Winter Electronics:25%"
+  "Returning Bronze Fall Unknown:No discount"
+  "Returning Silver Fall Unknown:No discount"
+  "Returning Gold Fall Unknown:No discount"
+  "Returning Bronze Fall Electronics:No discount"
+  "Returning Silver Fall Electronics:15%"
+  "Returning Gold Fall Electronics:No discount"
+)
+
+run_cause_effect_analysis() {
+  local -n test_cases=$1
+  for test_case in "${!test_cases[@]}"; do
+    IFS=':' read -r input expected <<< "${test_cases[$test_case]}"
+    local userStatus rewardMemberStatus season category
+    IFS=' ' read -r userStatus rewardMemberStatus season category <<< "${input}"
+    
+    local base="java -jar ./CSE565P1.jar"
+    local args="Claudio 18 $userStatus $rewardMemberStatus $season $category 5"
+    local cmd="$base $args"
+    local result=$(eval "$cmd")
+    echo $result
+  done
+}
+
+run_tests equivalence_partitioning_test_cases
+run_tests boundary_values_test_cases
+run_cause_effect_analysis cause_effect_cases
