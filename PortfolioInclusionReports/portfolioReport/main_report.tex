@@ -17,44 +17,31 @@
 
 
 \section{Introduction}
-This document provides a summary of two separate reports: 
-\begin{itemize}
-    \item Report 1: \textit{CSE 578: Data Visualization Project}
-    \item Report 2: \textit{CSE 579: Knowledge Representation and Reasoning Project}
-\end{itemize}
-Each report covers distinct topics, but both focus on the use of computational tools and data to address specific problems in their respective fields.
+This summary provides an overview of two independent projects undertaken as part of CSE courses. Each report explores a distinct domain: the first project focuses on data visualization techniques applied to social and economic datasets, while the second deals with combinatorial problem-solving in knowledge representation and reasoning. The two projects collectively highlight important computational methodologies for handling large datasets and solving optimization problems efficiently.
 
-\section{Summary of Report 1: Data Visualization Project}
-The first report details a project from CSE 578: Data Visualization. The project focuses on visualizing data from the 1994 Census Bureau Database to assist UVW College in creating marketing profiles. Key goals include developing insights on income, education, and demographic trends to tailor the college's offerings to various groups.
+\section{Report 1: Data Visualization and Insights from Census Data}
+The first project, conducted for CSE 578: Data Visualization, aimed at developing meaningful visualizations to assist in creating marketing profiles for UVW College based on a subset of the 1994 Census Bureau Database. The project focused on the significance of obtaining useful information from raw data and using advanced visualization techniques to communicate complicated connections.
 
-The project makes heavy use of Python-based data visualization tools like Matplotlib and Plotly, with SHAP analysis used to explain the relationships between different features in the data. A key finding was that gender and education level show significant relationships with salary outcomes, while other factors like hours worked had little impact.
+The primary computational tools used were Python libraries, including Pandas for data manipulation and Matplotlib and Plotly for visualizations, and SHAP (SHapley Additive exPlanations) analysis to uncover the contributions of different variables to an income classification task. A central challenge of this project was dealing with the inherent biases within the dataset. For example, gender imbalances—where male samples dominated the dataset—posed potential risks of skewing the analysis and subsequent conclusions. 
 
-Ethical considerations also played an important role, as the SHAP analysis revealed potential biases in the data, such as an overrepresentation of certain groups. The team emphasized transparency and ethical use of data, avoiding misleading conclusions in their recommendations.
+A significant lesson learned from the project was the ability to critically evaluate data sources and apply visualization techniques that reveal biases instead of hiding them. By utilizing box plots, scatter plots, and stacked bar charts, the project highlighted both the strengths and limitations of data-driven decision-making. For instance, SHAP analysis revealed that attributes such as age, education level, and occupation had the greatest influence on income predictions. Still, the skew in the sample distribution required careful interpretation of these results.
 
-\textbf{Key Contributions:}
-\begin{itemize}
-    \item Developed a Jupyter Notebook for exploratory data analysis.
-    \item Created visualizations such as scatter plots, stacked bar charts, and box plots to illustrate trends in the data.
-    \item Used SHAP analysis to examine the impact of various features on income levels.
-    \item Highlighted ethical concerns around biased data and its influence on decision-making.
-\end{itemize}
+The ethical considerations addressed in this project are an important part of modern data science, as the misrepresentation of findings could have real-world implications for marketing strategies or institutional policies. This project helped us gain a deeper understanding of data fairness, bias detection, and transparent communication of statistical results.
 
-\section{Summary of Report 2: Knowledge Representation and Reasoning Project}
-The second report comes from CSE 579: Knowledge Representation and Reasoning. It focuses on using Answer Set Programming (ASP) to solve the Automated Warehouse problem. The project implements ASP through clingo, a tool developed by the Potsdam Answer Set Solving Collection, to showcase the power of declarative problem-solving.
+\section{Report 2: Knowledge Representation and Answer Set Programming}
+Completed for CSE 579: Knowledge Representation and Reasoning, the second project involved solving the Automated Warehouse problem using Answer Set Programming (ASP). In this problem, multiple autonomous robots collaborate and deliver items in an optimal number of steps within a simulated warehouse environment. To achieve a solution we used an ASP solver, clingo, and the Asprilo visualization framework.
 
-In this problem, multiple robots must collaborate to deliver items in an automated warehouse. The team used clingo to model the problem space and constraints, and they verified their solution using the Asprilo framework to visualize robot movements and task execution.
+This project taught the practical application of declarative programming, where the focus is on describing the problem constraints rather than specifying an explicit algorithm to solve it. The three-step ASP methodology—\textit{generate}, \textit{define}, and \textit{test}—helped generate possible robot actions, define domain-specific rules, and eliminate infeasible solutions. The power of ASP lies in its ability to handle complex, combinatorial problems by reducing large search spaces efficiently.
 
-The main challenge was to optimize the number of steps the robots took to complete their deliveries. The team applied the ASP methodology of generating, defining, and testing possible solutions, with a strong focus on minimizing unnecessary actions. They demonstrated that with appropriate constraints, collaboration between robots could be achieved efficiently.
+A key learning from this project was the ability to model and enforce collaboration among the robots through minimal constraint adjustments. For instance, a single constraint in the code allowed robots to avoid collisions while pushing shelves, ensuring smooth cooperation. Additionally, ASP’s ability to minimize the number of steps needed to complete the task demonstrated its utility in optimization problems where multiple feasible solutions exist.
 
-\textbf{Key Contributions:}
-\begin{itemize}
-    \item Modeled the Automated Warehouse problem using ASP and clingo.
-    \item Developed constraints to ensure efficient robot collaboration.
-    \item Optimized robot movements to minimize the number of steps required for delivery.
-    \item Used the Asprilo framework to visualize the solution and validate results.
-\end{itemize}
+The visualization of results using Asprilo provided a visual demonstration of robot collaboration and task execution. Observing the real-time movement of robots helped validate the solution and identify opportunities for optimization. One significant lesson was the importance of domain-independent axioms, such as the law of inertia, which simplified the modeling of state changes across time steps. This abstraction allowed the project to focus on higher-level problem-solving strategies without getting bogged down in implementation details.
 
-\section{Conclusion}
-Both reports illustrate the application of advanced computational techniques to real-world problems. The Data Visualization report provides insights into using data analysis for decision-making in an academic context, while the Knowledge Representation report demonstrates how declarative programming can solve complex combinatorial problems in logistics.
+\section{Scientific Learnings and Conclusion}
+Both projects provided invaluable insights into different aspects of computational problem-solving. The Data Visualization project underscored the necessity of using visualization not only for conveying data-driven insights but also for uncovering latent biases in datasets. 
+
+The Knowledge Representation project provided deep exposure to declarative problem-solving using ASP. The experience of modeling complex robot collaboration in an automated warehouse environment highlighted the importance of constraint satisfaction problems in AI and logistics. The practical use of clingo for optimization problems showed how ASP can efficiently handle combinatorial tasks that would otherwise be challenging with imperative programming paradigms.
+
+Both projects illustrate how modern tools and methodologies can be leveraged to gain deeper insights and solve complex problems in their respective fields.
 
 \end{document}
